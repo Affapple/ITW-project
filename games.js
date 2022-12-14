@@ -85,7 +85,7 @@ var vm = function () {
 
     function sleep(milliseconds) {
         const start = Date.now();
-        while (Date.now() - start < milliseconds);
+        while (Date.now() - start < milliseconds); 
     }
 
     function showLoading() {

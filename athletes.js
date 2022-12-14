@@ -1,12 +1,14 @@
 let vm = function athletesTableViewModel() {
     let self = this;
 
-    self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/athletes/FullDetails?id=');
+    self.baseUri = ko.observable('http://192.168.160.58/Olympics/');
     self.name = ko.observable("Name");
     self.sex = ko.observable("Sex");
     self.Height = ko.observable("Height");
     self.Weight = ko.observable("Weight");
     self.records = ko.observableArray([]);
+
+    self.error = ko.observable('');
     self.currentPage = ko.observable(1);
     self.pagesize = ko.observable(20);
     self.totalRecords = ko.observable(50);
@@ -20,6 +22,8 @@ let vm = function athletesTableViewModel() {
     self.nextPage = ko.computed(function(){
         return parseInt(self.currentPage()) + 1 ;
     }, self);
+
+    
 
 
     
@@ -41,14 +45,13 @@ let vm = function athletesTableViewModel() {
             type: method,
             url: uri,
             dataType: "json",
-            data: JSON.stringify(data),
+            data: data ? JSON.stringify(data) : null,
             
             beforeSend: function(){console.log(method, " ", uri, "...")},
             
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("AJAX Call[" + uri + "] Fail...");
                 self.error(errorThrown);
-            
             },
             success: function (){
                 console.log("AJAX CAll", method, uri,"\nSuccess")
@@ -58,21 +61,19 @@ let vm = function athletesTableViewModel() {
 
     function startLoading(){
         showLoading();
-        id = 0
-        do {
-            data = pedidoAJAX(self.baseUri + (id++))
-        } while(data.length > 0);
-        hideLoading();
-    };
+        let composedURI = self.baseUri + "api/Athletes?page="+ self.currentPage + "&pagesize=" + self.pageSize
+        self.records = pedidoAJAX(composedURI, method)
+        hideLoading()
 
     // inicializar pedido
     startLoading()
+    };
 };
 
 
 
 
 $(document).ready(function(){
-    ko.applyBindigs(new vm);
+    ko.applyBindings(new vm);
 
 });
