@@ -1,16 +1,17 @@
+//TODO Mudar esta merda toda para aparecer fullDetails (shitEmplementation)
+
 let vm = function athletesTableViewModel() {
     let self = this;
 
     self.baseUri = ko.observable('http://192.168.160.58/Olympics/');
     self.name = ko.observable("Name");
     self.sex = ko.observable("Sex");
-    self.Height = ko.observable("Height");
-    self.Weight = ko.observable("Weight");
     self.records = ko.observableArray([]);
 
+    self.method="GET"
     self.error = ko.observable('');
     self.currentPage = ko.observable(1);
-    self.pagesize = ko.observable(20);
+    self.pageSize = ko.observable(20);
     self.totalRecords = ko.observable(50);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
@@ -22,10 +23,6 @@ let vm = function athletesTableViewModel() {
     self.nextPage = ko.computed(function(){
         return parseInt(self.currentPage()) + 1 ;
     }, self);
-
-    
-
-
     
     function showLoading() {
         $("#loadingModal").modal('show', {
@@ -39,41 +36,73 @@ let vm = function athletesTableViewModel() {
         })
     };
 
-    function pedidoAJAX(uri, method){
-        self.error("idk tf im doing tbh")
+    function pedidoAJAX(uri, method, data){
+        self.error("")
+        
         return $.ajax({
             type: method,
             url: uri,
             dataType: "json",
             data: data ? JSON.stringify(data) : null,
-            
-            beforeSend: function(){console.log(method, " ", uri, "...")},
-            
+
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("AJAX Call[" + uri + "] Fail...");
+                hideLoading();
                 self.error(errorThrown);
             },
-            success: function (){
-                console.log("AJAX CAll", method, uri,"\nSuccess")
-            }
         })
     };
 
-    function startLoading(){
+    function startLoading(page){
         showLoading();
-        let composedURI = self.baseUri + "api/Athletes?page="+ self.currentPage + "&pagesize=" + self.pageSize
-        self.records = pedidoAJAX(composedURI, method)
-        hideLoading()
+
+        let composedUri = self.baseUri() + "api/Athletes?page="+ page + "&pagesize=" + self.pageSize();
+
+        pedidoAJAX(composedUri, 'GET').done(function (data) {
+            console.log(data);
+            
+            self.records(data.Records);
+            self.currentPage(data.CurrentPage);
+            self.hasNext(data.HasNext);
+            self.hasPrevious(data.HasPrevious);
+            self.pagesize(data.PageSize)
+            self.totalPages(data.TotalPages);
+            self.totalRecords(data.TotalRecords);
+            //self.SetFavourites();
+            hideLoading();
+        });
+        hideLoading();    
+    };
+
+    function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+        console.log("sPageURL=", sPageURL);
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    }
 
     // inicializar pedido
-    startLoading()
-    };
+    var pg = getUrlParameter('page');
+    if (pg == undefined)
+        startLoading(1);
+    else {
+        startLoading(pg);
+    }
 };
 
 
 
 
 $(document).ready(function(){
+    console.log("ready!");
     ko.applyBindings(new vm);
 
 });
