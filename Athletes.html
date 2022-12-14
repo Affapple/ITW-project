@@ -14,7 +14,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html" tabindex="Olympics"><img src="../images/Olympic_rings.svg" height="24" /></a>
+            <a class="navbar-brand" href="index.html" tabindex="Olympics"><img src="images\Olympic_rings.svg" height="24" /></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -55,32 +55,47 @@
                 </ul>
             </nav>
         </div>
-
-        <table class="table table-striped table-dark">
+        <!-- Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Página a Carregar</h5>
+            </div>
+            <div class="modal-body">
+            ...
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+        
+        
+        <table class="table table-striped table-dark table-sm small ">
             <thead>
                 <tr>
                     <th class="d-none" id="id"></th>
-                    <th>Nome</th>
-                    <th>Sexo</th>
-                    <th>Altura</th>
-                    <th>Peso</th>
-                    
+                    <th span="col">Nome</th>
+                    <th span="col">Sexo</th>
+                    <th span="col">Altura</th>
+                    <th span="col">Peso</th>
+                    <th span="col"></th>
                 </tr>
             </thead>
-            <tbody data-bind="foreach: records">
+            <tbody data-bind="for: records">
                 <tr>
-                    <th data-bind="text:Name"></th>
-                    <th data-bind="text:Sex"></th>
-                    <th data-bind="text:Weight"></th>
-                    <th data-bind="text:Height"></th>
-                    <th><a data-bind="attr: {href: athleteID}"><i class="fa fa-eye"></i></a></th>
+                    <td data-bind="text:Name"></td>
+                    <td data-bind="text:Sex"></td>
+                    <td data-bind="text:Weight"></td>
+                    <td data-bind="text:Height"></td>
+                    <td><button class="btn btn-default btn-secondary btn-xs"><i class="fa fa-eye"></i></button></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <!-- Fim de Area de Trabalho -->
-    <!-- <nav class="navbar navbar-light bg-light fixed-bottom">
+    <nav class="navbar navbar-light bg-light fixed-bottom">
         <div class="container small">
             <div class="navbar-text">&copy;  Introdução as Tecnologias Web - 2022/23</div>
             <div class="navbar-text">Made with <i class="fa fa-heart-o text-danger"></i> for U by <a href="mailto:jsp@ua.pt" class="text-decoration-none text-muted">jsp@ua.pt</a>.</div>
@@ -88,7 +103,7 @@
                 <div class="nav-item text-end d-none d-md-block"><a href="https://www.ua.pt" class="nav-link">Universidade de Aveiro</a></div>
            </div>
        </div>
-    </nav> -->
+    </nav>
 
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
