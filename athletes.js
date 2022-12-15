@@ -12,6 +12,7 @@ let vm = function athletesTableViewModel() {
     self.error = ko.observable('');
     self.currentPage = ko.observable(1);
     self.pageSize = ko.observable(20);
+    self.totalPages = ko.observable(10)
     self.totalRecords = ko.observable(50);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
@@ -36,6 +37,31 @@ let vm = function athletesTableViewModel() {
         })
     };
 
+    self.fromRecord = ko.computed(function () {
+        return self.previousPage() * self.pageSize() + 1;
+    }, self);
+
+    self.toRecord = ko.computed(function () {
+        return Math.min(self.currentPage() * self.pageSize(), self.totalRecords());
+    }, self);
+    
+    self.totalPages = ko.observable(0);
+    self.pageArray = function () {
+        var list = [];
+        var size = Math.min(self.totalPages(), 9);
+        var step;
+        if (size < 9 || self.currentPage() === 1)
+            step = 0;
+        else if (self.currentPage() >= self.totalPages() - 4)
+            step = self.totalPages() - 9;
+        else
+            step = Math.max(self.currentPage() - 5, 0);
+
+        for (var i = 1; i <= size; i++)
+            list.push(i + step);
+        return list;
+    };
+
     function pedidoAJAX(uri, method, data){
         self.error("")
         
@@ -56,7 +82,7 @@ let vm = function athletesTableViewModel() {
     function startLoading(page){
         showLoading();
 
-        let composedUri = self.baseUri() + "api/Athletes?page="+ page + "&pagesize=" + self.pageSize();
+        let composedUri = self.baseUri() + "api/Athletes?page="+ page + "&pageSize=" + self.pageSize();
 
         pedidoAJAX(composedUri, 'GET').done(function (data) {
             console.log(data);
@@ -65,9 +91,10 @@ let vm = function athletesTableViewModel() {
             self.currentPage(data.CurrentPage);
             self.hasNext(data.HasNext);
             self.hasPrevious(data.HasPrevious);
-            self.pagesize(data.PageSize)
+            self.pageSize(data.PageSize)
             self.totalPages(data.TotalPages);
             self.totalRecords(data.TotalRecords);
+
             //self.SetFavourites();
             hideLoading();
         });
