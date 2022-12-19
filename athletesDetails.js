@@ -2,13 +2,18 @@ let vm = function viewModel(){
     let self = this;
 
     self.baseUri = ko.observable('http://192.168.160.58/Olympics/');
-    self.name = ko.observable("Name");
-    self.sex = ko.observable("Sex");
-    self.id = getUrlParameter("id")
+    self.Name = ko.observable('');
+    self.Sex = ko.observable('');
+    self.Weight = ko.observable('');
+    self.Height = ko.observable('');
+    self.Photo = ko.observable('');
+    self.Link = ko.observable('');
+    self.BornDate = ko.observable('');
+    self.DiedDate = ko.observable('');
+    self.atleta = ko.observableArray([]);
 
-
-    self.method="GET"
-    self.error = ko.observable('');
+    self.Id = getUrlParameter("id");
+    self.error = ko.observable("")
 
     function pedidoAJAX(uri, method, data){
         self.error("")
@@ -25,7 +30,6 @@ let vm = function viewModel(){
                 self.error(errorThrown);
             },
         })
-    
     };
 
     function getUrlParameter(sParam) {
@@ -44,20 +48,24 @@ let vm = function viewModel(){
     };
 
     function loadPage(){
-        let composedUri = self.baseUri + "api/Athletes/FullDetails?id=" + self.id
-        pedidoAJAX(composedUri, "GET").done(function(){
-            self.name = data.Name;
-            self.sex = data.Sex;
-            self.height = data.Height;
-            self.weight = data.Weight;
-            self.bornDate = data.BornDate
-            self.bornPlace = data.BornPlace
-            self.diedDate = data.BornDate
-            self.DiedPlace = data.BornPlace
-            self.Photo = data.Photo;
-            self.link = data.OlympediaLink
+        let composedUri = self.baseUri() + "api/Athletes/FullDetails?id=" + self.Id
+        pedidoAJAX(composedUri, "GET").done(function(data){
+            self.atleta(data)
+            self.Name(data.Name)
+            if (data.Sex == "M"){
+                self.Sex()
+            } else {
+
+            }
+            self.Photo(data.Photo)
+            self.Weight(data.Weight)
+            self.Height(data.Height)
+            self.BornDate(data.BornDate)
+            self.DiedDate(data.DiedDate)
         })
     };
+
+    loadPage();
 };
 
 $(document).ready(function(){

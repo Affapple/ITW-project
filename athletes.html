@@ -15,6 +15,11 @@
         .mainContent{
             margin-top:60px; margin-bottom:60px;
         }
+
+        td:has(a){
+            text-align: center;
+            vertical-align: middle;
+        }
     </style>
 </head>
 
@@ -64,8 +69,8 @@
         <!-- Paginaçao -->
         <div class="row">
             <p class="col-md-4 my-0 mr-auto pt-2 small">
-                <span data-bind="html: 'Page: ' + currentPage() + ' of ' + totalPages()" class="small"></span><br />
-                <span data-bind="html: 'Games: '+ fromRecord() + '-' + toRecord() + ' of ' + totalRecords()"
+                <span data-bind="html: 'Page: ' + currentPage() + ' de ' + totalPages()" class="small"></span><br />
+                <span data-bind="html: 'Entradas: '+ fromRecord() + '-' + toRecord() + ' de ' + totalRecords()"
                     class="small"></span>
             </p>
             <div class="col-md-8 my-0 pt-3 sm">
@@ -78,15 +83,15 @@
 
                     <!-- /ko -->
                     <!-- ko foreach: pageArray()-->
-                    <!-- ko if:$data == $parent.currentPage() -->
+                        <!-- ko if:$data == $parent.currentPage() -->
                     <li class="active page-item"><a class="page-link small"
                             data-bind="attr: { title:'Current Page ' + $data }, text: $data"></a></li>
-                    <!-- /ko -->
-                    <!-- ko if:$data != $parent.currentPage() -->
+                        <!-- /ko -->
+                        <!-- ko if:$data != $parent.currentPage() -->
                     <li class="page-item"><a class="page-link small"
                             data-bind="attr: { href: './athletes.html?page=' + $data, title:'Goto Page ' + $data }, text:$data"></a>
                     </li>
-                    <!-- /ko -->
+                        <!-- /ko -->
                     <!-- /ko -->
                     <!-- ko if: currentPage() < totalPages() - 4 && totalPages() > 9 -->
                     <li class="page-item"><a class="page-link small" title="Next Page"
@@ -115,7 +120,7 @@
     
 
     <div class="container">
-        <!-- ko if: records().length > 50 -->
+        <!-- ko if: totalRecords() > 20 -->
         <table class="table table-striped table-dark table-sm small ">
             <thead>
                 <tr>
@@ -123,19 +128,22 @@
                     <th span="col">Nome</th>
                     <th span="col">Sexo</th>
                     <th span="col"></th>
+                    <th span="col"></th>
                 </tr>
             </thead>
             <tbody data-bind="foreach: records()">
                 <tr>    
-                    <td data-bind="text: Id" class=""></td>
+                    <td data-bind="text: Id" class="small"></td>
                     <td data-bind="text: Name"></td>
                     <td data-bind="text: Sex"></td>
-                    <td class="d-flex justify-content-end">
+                    <td class="col-1">
                         <a  class="btn btn-default btn-secondary btn-xs mx-1"
-                            data-bind="attr: {href: './athleteDetails.html?id=' + Id, 'aria-label' : 'Ver detalhes completos de ' + Name[0] + ' ' + Name[Name.length]}"
+                            data-bind="attr: {href: './athletesDetails.html?id=' + Id, 'aria-label' : 'Ver detalhes completos de ' + Name[0] + ' ' + Name[Name.length]}"
                             title="Ver detalhes">
                             <i class="fa fa-eye"></i>
                         </a>
+                    </td>
+                    <td class="col-1"c>
                         <a  id="addToFavourites" 
                             class="btn btn-default btn-secondary btn-xs"
                             data-bind="attr: {'aria-label' : 'Adicionar ' + Name.split(' ')[0]+ ' ' + Name.split(' ')[Name.split(' ').length-1] + ' Aos favoritos'}"
@@ -148,20 +156,21 @@
         </table>
         <!-- /ko -->
 
-        <!-- ko ifnot: records().length > 50 -->
-        <div class="card" style="width: 18rem;">
-            <!-- ko foreach: listaFullDetails() -->
-                <!-- ko if: image-link != "" -->
-            <img class="card-img-top" data-bind="attr: {src:image-link, alt:Name}" >
-                <!-- /ko -->
-                <!-- ko ifnot: image-link == "" -->
-            <img class="card-img-top" img="./images/rei.png" alt="Imagem Representativa" >
-                <!-- /ko -->
+        <!-- ko ifnot: totalRecords() > 20 -->
+        <div class="d-flex flex-wrap">
+            <!-- ko foreach: records() -->
+            <div class="card col-12 col-sm-6 col-md-4 col-lg-3 d-flex text-center">
+                <h5 class="card-title small" data-bind="text:Name"></h5>
+                <div class="card-body" style="margin:5px;">
+                    <!-- ko if: Photo != null -->
+                    <img class="card-img-top image" data-bind="attr: {'src':Photo, alt:Name}" >
+                    <!-- /ko -->
 
-            <div class="card-body">
-              <h5 class="card-title" data-bind="text:Name"></h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <!-- ko if: Photo == null -->
+                    <img class="my-2 card-img-top" src="images\rei.png" alt="Imagem Representativa" >
+                    <!-- /ko -->
+                <a href="#" class="btn btn-primary">Mais detalhes</a>
+                </div>
             </div>
             <!-- /ko -->
         </div>
