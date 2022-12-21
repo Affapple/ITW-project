@@ -11,6 +11,7 @@ let vm = function viewModel(){
     self.BornDate = ko.observable('');
     self.DiedDate = ko.observable('');
     self.atleta = ko.observableArray([]);
+    self.Medals = ko.observableArray([]);
 
     self.Id = getUrlParameter("id");
     self.error = ko.observable("")
@@ -50,19 +51,17 @@ let vm = function viewModel(){
     function loadPage(){
         let composedUri = self.baseUri() + "api/Athletes/FullDetails?id=" + self.Id
         pedidoAJAX(composedUri, "GET").done(function(data){
-            self.atleta(data)
-            self.Name(data.Name)
-            if (data.Sex == "M"){
-                self.Sex()
-            } else {
-
-            }
-            self.Photo(data.Photo)
-            self.Weight(data.Weight)
-            self.Height(data.Height)
-            self.BornDate(data.BornDate)
-            self.DiedDate(data.DiedDate)
-        })
+            self.atleta(data);
+            self.Name(data.Name);
+            self.Sex(data.Sex);
+            self.Photo(data.Photo);
+            self.Weight(data.Weight);
+            self.Height(data.Height);
+            self.BornDate(data.BornDate);
+            self.DiedDate(data.DiedDate);
+            self.Medals(data.Medals)
+            console.log(self.Medals())
+        });
     };
 
     loadPage();

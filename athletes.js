@@ -19,8 +19,6 @@ let vm = function athletesTableViewModel() {
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
 
-    let searchParams = getUrlParameter("search")
-
     self.previousPage = ko.computed(function(){
         return parseInt(self.currentPage()) - 1 ;
     }, self);
@@ -74,11 +72,10 @@ let vm = function athletesTableViewModel() {
 
 
     
-    function startLoading(page){
+    function startLoading(page, searchParams = ""){
         showLoading();
-
-        self.searchParams = getUrlParameter("search");
-        if (self.searchParams === undefined) {
+        console.log(searchParams)
+        if (searchParams=="") {
             composedUri = self.baseUri() + "/Athletes?page="+ page + "&pageSize=" + self.pageSize();
         } else {
             composedUri = self.baseUri() + "/Athletes/SearchByName?q=" + searchParams;
@@ -86,7 +83,7 @@ let vm = function athletesTableViewModel() {
 
         pedidoAJAX(composedUri, 'GET').done(function (data) {
             console.log(data);
-            if ( self.searchParams == undefined ){
+            if ( searchParams == "" ){
                 self.records(data.Records);
                 self.currentPage(data.CurrentPage);
                 self.hasNext(data.HasNext);
@@ -96,43 +93,51 @@ let vm = function athletesTableViewModel() {
                 self.totalRecords(data.TotalRecords);
             } else {
                 self.records(data);
-                // self.currentPage(data.CurrentPage);
+                self.currentPage(1);
                 self.totalRecords(data.length);
                 self.totalPages(parseInt(data.length/20 + 1));
-            }
+                
+                // let counter = 0;
+                // let pagina = 0;
+                // let arrayDeAtletas = new Array;
+
+                // self.records().array.forEach(atleta => {
+                //     if (counter == 19){
+                //         pagina++
+                //         counter = 0
+                //         arrayDeAtletas[pagina] = [atleta]
+                //     }else{
+                //         arrayDeAtletas[pagina].concat(atleta);
+                //     }
+                //     counter++
+                // });
+            };
             //self.SetFavourites();
             hideLoading();
         });
     }
 
+    $("#search").click(function(){
+        namePart = $("#searchArgs").val().replace(/ /g, "+");
+        startLoading(page = 1, namePart)
+    })
+
     // inicializar pedido
     var pg = getUrlParameter('page');
     if (pg == undefined){
-        startLoading(1);
+        startLoading(page = 1);
     } else {
-        startLoading(pg);
+        startLoading(page = pg);
     }
-
 }
 
-
-
 $(document).ready(function(){
-    
     console.log("ready!");
     ko.applyBindings(new vm);
 });
 
 
-$("#search").click(function(){
-    namePart = $("#searchArgs").val().replace(/ /g, "+");
-    console.log(namePart.length)
-    if (namePart.length == 0){
-        window.location.href = "." + window.location.pathname
-    } else {
-        window.location.href = window.location.origin + "/athletes.html?search=" + namePart
-    }
-})
+
 
 
 
