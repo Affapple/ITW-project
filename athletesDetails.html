@@ -55,9 +55,16 @@
                 <img class="image" src="images\rei.jpg" alt="Imagem Representativa" >
                 <!-- /ko -->
             </div>
-            <div class="col-3">Update</div>
+            <ul class="col-6 col-md-3 list-group">
+                <li class="list-group-item">
+                    <i class="fa fa-"></i><span data-bind="text:BornDate"></span>
+                </li>
+                <li class="list-group-item">
+                    <span data-bind="text:DiedDate"></span>
+                </li>
+            </ul>
             <!-- Informacoes atleta  -->
-            <ul class="col-3 list-group">
+            <ul class="col-6 col-md-3 list-group">
                 <li class="list-group-item d-flex flex-wrap">
                     <span class="col-6">Peso: <span data-bind="text:Weight"></span>Kg</span>
                     <span class="col-6">Altura: <span data-bind="text:Height"></span> cm</span>

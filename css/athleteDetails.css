@@ -1,4 +1,4 @@
-a::before{
+figcaption > a::before{
     content: '🔗';
 }
 figcaption{
