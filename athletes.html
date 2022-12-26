@@ -150,7 +150,6 @@
             </tbody>
         </table>
         <!-- /ko -->
-        daw
 
         <!-- ko ifnot: totalRecords() > 20 -->
         <div class="d-flex flex-wrap">
@@ -165,7 +164,8 @@
                     <!-- ko if: Photo == null -->
                     <img class="my-2 card-img-top" src="images\rei.jpg" alt="Imagem Representativa" >
                     <!-- /ko -->
-                <a href="#" class="btn btn-primary">Mais detalhes</a>
+                <a data-bind="attr: {href: './athletesDetails.html?id=' + Id, 'aria-label' : 'Ver detalhes completos de ' + Name[0] + ' ' + Name[Name.length]}"
+                   class="btn btn-primary">Mais detalhes</a>
                 </div>
             </div>
             <!-- /ko -->

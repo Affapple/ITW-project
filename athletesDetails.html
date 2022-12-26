@@ -38,11 +38,10 @@
                 <!-- ko if: Sex() == "M" -->&#9794;<!-- /ko -->
             </h3>
         </div>
-        <div class="row d-flex">
+        <div class="row d-flex justify-content-between">
 
             <!-- Imagem Atleta  -->
-
-            <div class="col-12 col-md-6 d-flex justify-content-center my-3">
+            <div class="mw100 col-md-4">
                 <!-- ko if: Photo != null -->
                 <figure>
                     <img class="image" id="foto" data-bind="attr: {'src':Photo, alt:Name}" >
@@ -55,31 +54,50 @@
                 <img class="image" src="images\rei.jpg" alt="Imagem Representativa" >
                 <!-- /ko -->
             </div>
-            <div class="col-3"></div>
+            
+
             <!-- Informacoes atleta  -->
-            <ul class="col-6 col-md-3 list-group">
+
+            <ul class="col-6 col-md-3 list-group my-3">
                 <li class="list-group-item d-flex flex-wrap">
                     <span class="col-6">Peso: <span data-bind="text:Weight"></span>Kg</span>
                     <span class="col-6">Altura: <span data-bind="text:Height"></span> cm</span>
                 </li>
 
-                <!-- ko if: Medals().length > 0 -->
-                <li class="list-group-item">
-                    <span>Medalhas</span>
-                    <!-- foreach: Medals() -->
-                    <div class="medal" data-bind="css: {'background': MedalName}">
-                        <span data-bind="text:Counter"></span>
-                    </div>
-                    <!-- /ko -->
-                </li>
-                <!-- /ko -->
                 <li class="list-group-item">
 
                 </li>
+
+                <li class="list-group-item">
+
+                </li>
+
                 <li class="list-group-item">
 
                 </li>
             </ul>
+
+            <div class="col-6 col-md-3 my-5">
+                <!-- ko if: Medals().length > 0 -->
+                <div class="podium">
+                    <!-- ko with: Medals() -->
+                    <div class="bronze"></div>
+                    <div class="gold"></div>
+                    <div class="silver"></div>
+                    <div class="medal bronzeMedal">
+                        <span class="medalNumber" data-bind="text: bronzeMedals"></span>
+                    </div>
+                    <div class="medal goldMedal">
+                        <span class="medalNumber" data-bind="text: goldMedals"></span>
+                    </div>
+                    <div class="medal silverMedal">
+                        <span class="medalNumber" data-bind="text: silverMedals"></span>
+                    </div>
+                    <!-- /ko -->
+
+                </div>
+                <!-- /ko  -->
+            </div>
         </div>
     </div>
     
