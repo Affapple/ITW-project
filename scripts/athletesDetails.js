@@ -1,4 +1,4 @@
-let vm = function viewModel(){
+let vm = function viewModel() {
     let self = this;
 
     self.baseUri = ko.observable('http://192.168.160.58/Olympics/');
@@ -9,16 +9,23 @@ let vm = function viewModel(){
     self.Photo = ko.observable('');
     self.Link = ko.observable('');
     self.BornDate = ko.observable('');
+    self.BornPlace = ko.observable('');
     self.DiedDate = ko.observable('');
+    self.OlympLink = ko.observable('')
     self.atleta = ko.observableArray([]);
     self.Medals = ko.observableArray([]);
+    self.bronzeMedals = ko.observable(0);
+    self.silverMedals = ko.observable(0);
+    self.goldMedals = ko.observable(0);
+    self.flag = ko.observable('')
+    self.flagName = ko.observable('')
 
     self.Id = getUrlParameter("id");
     self.error = ko.observable("")
 
-    function pedidoAJAX(uri, method, data){
+    function pedidoAJAX(uri, method, data) {
         self.error("")
-        
+
         return $.ajax({
             type: method,
             url: uri,
@@ -38,7 +45,6 @@ let vm = function viewModel(){
             sURLVariables = sPageURL.split('&'),
             sParameterName,
             i;
-        console.log("sPageURL=", sPageURL);
         for (i = 0; i < sURLVariables.length; i++) {
             sParameterName = sURLVariables[i].split('=');
 
@@ -48,25 +54,50 @@ let vm = function viewModel(){
         }
     };
 
-    function loadPage(){
+    function loadPage() {
         let composedUri = self.baseUri() + "api/Athletes/FullDetails?id=" + self.Id
-        pedidoAJAX(composedUri, "GET").done(function(data){
+
+        pedidoAJAX(composedUri, "GET").done(function (data) {
             self.atleta(data);
             self.Name(data.Name);
             self.Sex(data.Sex);
             self.Photo(data.Photo);
             self.Weight(data.Weight);
             self.Height(data.Height);
-            self.BornDate(data.BornDate);
-            self.DiedDate(data.DiedDate);
+            self.OlympLink(data.OlympediaLink);
+
+            self.BornDate(String(data.BornDate).substring(0, 10));
+
+            self.BornPlace(String(data.BornPlace).match(/\(([^)]+)\)/)[0])
+            let Paises = self.baseUri() + 'api/Countries/SearchByName?q=' + String(self.BornPlace()).substring(1,2)
+            console.log(Paises)
+            pedidoAJAX(Paises, 'GET').done(function (dados) {
+                dados.forEach(pais => {
+                    console.log(pais.IOC)
+                    if (pais.IOC == self.BornPlace()) {
+                        self.flag(pais.Flag);
+                        self.flagName(pais.Name);
+                        return true;
+                    };
+                });
+            });
+            self.DiedDate(String(data.DiedDate).substring(0, 10));
+
             self.Medals(data.Medals)
-            console.log(self.Medals())
+            self.Medals().forEach(medal => {
+                if (medal.MedalName == "Gold") { self.goldMedals(medal.Counter) };
+                if (medal.MedalName == "Silver") { self.silverMedals(medal.Counter) };
+                if (medal.MedalName == "Bronze") { self.bronzeMedals(medal.Counter) };
+            });
         });
+
+
     };
 
     loadPage();
+
 };
 
-$(document).ready(function(){
+$(document).ready(function () {
     ko.applyBindings(vm);
 });
