@@ -18,7 +18,7 @@ let vm = function athletesTableViewModel() {
     self.totalRecords = ko.observable(1);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
-    self.searchParams= ko.observable(getUrlParameter('search'));
+    self.searchParams= ko.observable("");
     self.favourites = {
         favs: [],
     }
@@ -118,6 +118,9 @@ let vm = function athletesTableViewModel() {
 
     // inicializar pedido
     var pg = getUrlParameter('page');
+    let srch = getUrlParameter('search')
+    if (srch != undefined){self.searchParams(srch)}
+    
     if (pg == undefined){
         startLoading(page = 1);
     } else {
