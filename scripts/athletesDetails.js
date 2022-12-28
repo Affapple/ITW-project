@@ -14,6 +14,9 @@ let vm = function viewModel() {
     self.OlympLink = ko.observable('')
     self.atleta = ko.observableArray([]);
     self.Medals = ko.observableArray([]);
+    self.Games = ko.observableArray([]);
+    self.Modalidades = ko.observableArray([]);
+    self.Competitions = ko.observableArray([]);
     self.bronzeMedals = ko.observable(0);
     self.silverMedals = ko.observable(0);
     self.goldMedals = ko.observable(0);
@@ -66,21 +69,28 @@ let vm = function viewModel() {
             self.Height(data.Height);
             self.OlympLink(data.OlympediaLink);
 
+            self.Games(data.Games);
+            self.Modalidades(data.Modalities);
+            self.Competitions(data.Competitions);
+            
             self.BornDate(String(data.BornDate).substring(0, 10));
 
-            self.BornPlace(String(data.BornPlace).match(/\(([^)]+)\)/)[0])
-            let Paises = self.baseUri() + 'api/Countries/SearchByName?q=' + String(self.BornPlace()).substring(1,2)
-            console.log(Paises)
-            pedidoAJAX(Paises, 'GET').done(function (dados) {
-                dados.forEach(pais => {
-                    console.log(pais.IOC)
-                    if (pais.IOC == self.BornPlace()) {
-                        self.flag(pais.Flag);
-                        self.flagName(pais.Name);
-                        return true;
-                    };
+            if (data.BornPlace != null) {
+                self.BornPlace(String(data.BornPlace).match(/\(([^)]+)\)/)[0])
+                let Paises = self.baseUri() + 'api/Countries/SearchByName?q=' + String(self.BornPlace()).substring(1, 2)
+                console.log(Paises)
+                pedidoAJAX(Paises, 'GET').done(function (dados) {
+                    dados.forEach(pais => {
+                        if (pais.IOC == self.BornPlace()) {
+                            self.flag(pais.Flag);
+                            self.flagName(pais.Name);
+                            return true;
+                        };
+                    });
                 });
-            });
+            } else { self.flag('.\\images\\earthFlag.jpg');
+                     self.flagName('Earth') }
+
             self.DiedDate(String(data.DiedDate).substring(0, 10));
 
             self.Medals(data.Medals)

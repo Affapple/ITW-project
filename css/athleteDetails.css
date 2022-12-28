@@ -19,12 +19,16 @@ figcaption{
     width:25px;
     height:25px;
     border-radius: 25px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+
     display: flex;
+
 } .medalNumber{position: inherit; left:50%; transform: translateX(-50%);}
 .bronze{
     width: 50px;
     height: 50px;
     background-color: #cd7f32;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 .bronzeMedal{
     background-color: #ce9051;
@@ -35,7 +39,7 @@ figcaption{
     width: 50px;
     height: 100px;
     background-color: #ffd700;
-
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 .goldMedal{
     background-color: #ffe345;
@@ -47,6 +51,7 @@ figcaption{
     width: 50px;
     height: 65px;
     background-color: #c0c0c0;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 
 }
 .silverMedal{

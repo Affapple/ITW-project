@@ -9,7 +9,7 @@ let vm = function athletesTableViewModel() {
     self.records = ko.observableArray([]); 
     self.Weight = ko.observable("Weight");
     self.Height = ko.observable("Height");
-    self.Photo = ko.observable
+    self.Photo = ko.observable('')
 
     self.error = ko.observable('');
     self.currentPage = ko.observable(1);
@@ -18,6 +18,11 @@ let vm = function athletesTableViewModel() {
     self.totalRecords = ko.observable(1);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
+    self.searchParams= ko.observable(getUrlParameter('search'));
+    self.favourites = {
+        favs: [],
+    }
+
 
     self.previousPage = ko.computed(function(){
         return parseInt(self.currentPage()) - 1 ;
@@ -37,7 +42,7 @@ let vm = function athletesTableViewModel() {
     }, self);
     
     self.totalPages = ko.observable(1);
-    self.pageArray = function () {
+    self.pageArray = function () {        
         var list = [];
         var size = Math.min(self.totalPages(), 9);
         var step;
@@ -72,18 +77,20 @@ let vm = function athletesTableViewModel() {
 
 
     
-    function startLoading(page, searchParams = ""){
+    function startLoading(page){
         showLoading();
-        console.log(searchParams)
-        if (searchParams=="") {
+        // favourites
+        self.favourites = localStorage.getItem('favourites');
+
+        if (self.searchParams() == "") {
             composedUri = self.baseUri() + "/Athletes?page="+ page + "&pageSize=" + self.pageSize();
         } else {
-            composedUri = self.baseUri() + "/Athletes/SearchByName?q=" + searchParams;
+            composedUri = self.baseUri() + "/Athletes/SearchByName?q=" + self.searchParams();
         };
 
         pedidoAJAX(composedUri, 'GET').done(function (data) {
             console.log(data);
-            if ( searchParams == "" ){
+            if ( self.searchParams() == "" ){
                 self.records(data.Records);
                 self.currentPage(data.CurrentPage);
                 self.hasNext(data.HasNext);
@@ -92,34 +99,21 @@ let vm = function athletesTableViewModel() {
                 self.totalPages(data.TotalPages);
                 self.totalRecords(data.TotalRecords);
             } else {
-                self.records(data);
-                self.currentPage(1);
+                self.currentPage(page);
+                self.records(data.slice(20*(self.currentPage()-1), 20*(self.currentPage()) ));
                 self.totalRecords(data.length);
                 self.totalPages(parseInt(data.length/20 + 1));
-                
-                // let counter = 0;
-                // let pagina = 0;
-                // let arrayDeAtletas = new Array;
-
-                // self.records().array.forEach(atleta => {
-                //     if (counter == 19){
-                //         pagina++
-                //         counter = 0
-                //         arrayDeAtletas[pagina] = [atleta]
-                //     }else{
-                //         arrayDeAtletas[pagina].concat(atleta);
-                //     }
-                //     counter++
-                // });
+                console.log(self.records())
             };
-            //self.SetFavourites();
+
             hideLoading();
         });
     }
 
     $("#search").click(function(){
         namePart = $("#searchArgs").val().replace(/ /g, "+");
-        startLoading(page = 1, namePart)
+        newURL = '//' + location.host + location.pathname + '?page=1&search=' + namePart
+        window.location.href = newURL
     })
 
     // inicializar pedido
@@ -127,13 +121,18 @@ let vm = function athletesTableViewModel() {
     if (pg == undefined){
         startLoading(page = 1);
     } else {
-        startLoading(page = pg);
+        startLoading(page = pg)
+    }
+
+    self.addtoFavs = function(id){
+        return true
     }
 }
 
 $(document).ready(function(){
     console.log("ready!");
     ko.applyBindings(new vm);
+    self.hideLoading();
 });
 
 

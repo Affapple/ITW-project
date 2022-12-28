@@ -48,26 +48,25 @@
                 <!-- ko if: Sex() == "M" -->&#9794;<!-- /ko -->
             </h3>
         </div>
-        <div class="row d-fex justify-content-between">
+        <div class="row d-fex justify-content-between border-bottom my-3">
 
             <!-- Imagem Atleta  -->
-            <div class="mw100 col-md-4 my-3">
-                <!-- ko if: Photo != null -->
-                <figure>
+            <div class="mw100 col-md-4 d-flex justify-content-center">
+                <!-- ko if: Photo -->
+                <figure class="display:flex">
                     <a data-bind="attr :{href:OlympLink}"><img class="image" id="foto" data-bind="attr: {'src':Photo, alt:Name}"></a>
                     <figcaption class="small">
                         <a data-bind="text:Photo, attr: {href:Photo}"></a>
                     </figcaption>
                 </figure>
                 <!-- /ko -->
-                <!-- ko if: Photo == null -->
+                <!-- ko ifnot: Photo -->
                 <img class="image" src="images\rei.jpg" alt="Imagem Representativa">
                 <!-- /ko -->
             </div>
 
 
             <!-- Informacoes atleta  -->
- <!-- BORN pLACES CRL!!!!!!!!!!!!! -->
             <ul class="col-7 col-md-3 list-group my-3">
                 <li class="list-group-item d-flex flex-wrap">
                     <span class="col-6">Peso: <span data-bind="text:Weight"></span> Kg</span>
@@ -79,10 +78,25 @@
                     <span class="col-6"><img style="width:20px;"src="images\tombstone.svg" alt="tomb"> <span data-bind="text:DiedDate"></span> </span>
                 </li>
 
-                <li class="list-group-item d-flex flex-wrap">
-                    <span class="col-6"><img style="height:30px;" data-bind="attr: {src:flag, title:BornPlace}"> </span>
-                    <span class="col-6" data-bind="text:flagName"></span>
+                <li class="list-group-item text-center">
+                    <span>
+                        <img style="height:27px;" data-bind="attr: {src:flag, title:BornPlace}">
+                    </span>
+                    <span data-bind="text:flagName"></span>
                 </li>
+                
+                <!-- ko if: Modalidades().length > 0  -->
+                <li class="list-group-item d-flex flex-wrap">
+                    <span class="col-6">Modalidades:</span>
+                    <span class="col-6" data-bind="foreach: Modalidades">
+                        <a class="link-dark text-decoration-none"
+                            data-bind="attr: {href: './modalidades?id=' + Id}">
+                            <img style="height:30px" data-bind="attr:{src:Photo}"></img>
+                            <span data-bind="text:Name"></span>
+                        </a>
+                    </span>
+                </li>
+                <!-- /ko -->
             </ul>
 
             <div class="col-5 col-md-3 my-5">
@@ -102,6 +116,41 @@
                 </div>
             </div>
         </div>
+
+        <!-- ko if: Competitions().length >0 -->
+        <div id="comps" class="row ">
+            <label for="comps"><h5>Competições</h5></label>
+            <table>
+                <tr>
+                    <td style="margin-left: 20px" colspan="2" class="small col-lg-12" data-bind="foreach: Competitions">
+                        <div class="border rounded d-inline-block mr-2 mb-1 p-1">
+                            <i class="fa fa-dot-circle-o"></i>
+                            <a  class="text-muted text-decoration-none" data-bind="attr: { href: './CompetitionDetails.html?id=' + Id }">
+                                <span data-bind="text: Name" ></span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: Games().length > 0 -->
+        <div id="edc" class="row my-3">
+            <label for="edc"><h5>Ediçoes Presentes</h5></label>
+            <table>
+                <tr>
+                    <td style="margin-left: 20px" colspan="2" class="small col-lg-12" data-bind="foreach: Games">
+                        <div class="border rounded d-inline-block mr-2 mb-1 p-1">
+                            <img style="height:2rem" data-bind="attr: {src:Logo}"></img>
+                            <a  class="text-muted text-decoration-none" data-bind="attr: { href: './GameDetails.html?id=' + Id }">
+                                <span data-bind="text: Name" ></span> (<span data-bind="text: CountryName"></span>)
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- /ko -->
     </div>
 
 
@@ -124,3 +173,8 @@
 </body>
 
 </html>
+
+
+
+
+
