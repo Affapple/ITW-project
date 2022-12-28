@@ -20,7 +20,26 @@ let vm = function athletesTableViewModel() {
     self.hasNext = ko.observable(false);
     self.searchParams= ko.observable("");
     self.favourites = {
-        favs: [],
+        athletes: [],
+        games: [],
+
+    }; 
+    atletasFavoritos=[]
+
+
+    self.updateFavourites = function(id){
+        let index = atletasFavoritos.indexOf(String(id))
+        if(index !== -1){
+            $("#favourite_"+id).css('color', 'white')
+            atletasFavoritos.splice(index, 1)
+        } else if(index == -1){
+            $("#favourite_"+id).css('color', 'red')
+            atletasFavoritos.push(String(id))
+        };
+        
+        console.log(atletasFavoritos)
+        console.log(self.favourites);
+        window.localStorage.setItem('favourites', JSON.stringify(self.favourites))
     }
 
 
@@ -79,8 +98,13 @@ let vm = function athletesTableViewModel() {
     
     function startLoading(page){
         showLoading();
-        // favourites
-        self.favourites = localStorage.getItem('favourites');
+
+        if (localStorage.getItem('favourites') != null){
+            self.favourites = JSON.parse(localStorage.favourites)
+        } else {
+            localStorage.setItem('favourites', JSON.stringify(self.favourites));
+        };
+        atletasFavoritos = self.favourites.athletes;
 
         if (self.searchParams() == "") {
             composedUri = self.baseUri() + "/Athletes?page="+ page + "&pageSize=" + self.pageSize();
@@ -103,8 +127,11 @@ let vm = function athletesTableViewModel() {
                 self.records(data.slice(20*(self.currentPage()-1), 20*(self.currentPage()) ));
                 self.totalRecords(data.length);
                 self.totalPages(parseInt(data.length/20 + 1));
-                console.log(self.records())
+
             };
+            atletasFavoritos.forEach(id => {
+                $("#favourite_"+id).css('color','red');
+            });
 
             hideLoading();
         });
@@ -116,6 +143,7 @@ let vm = function athletesTableViewModel() {
         window.location.href = newURL
     })
 
+    
     // inicializar pedido
     var pg = getUrlParameter('page');
     let srch = getUrlParameter('search')
@@ -127,9 +155,7 @@ let vm = function athletesTableViewModel() {
         startLoading(page = pg)
     }
 
-    self.addtoFavs = function(id){
-        return true
-    }
+
 }
 
 $(document).ready(function(){

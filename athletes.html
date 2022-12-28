@@ -139,8 +139,14 @@
                                     title="Ver detalhes">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a id="addToFavourites" class="btn btn-default btn-secondary btn-sm"
-                                    data-bind="attr: {'aria-label' : 'Adicionar ' + Name.split(' ')[0]+ ' ' + Name.split(' ')[Name.split(' ').length-1] + ' Aos favoritos'}"
+                                <a  class="btn btn-default btn-secondary btn-sm"
+                                    data-bind="attr: {'aria-label' : 'Adicionar ' + 
+                                                        Name.split(' ')[0]+ ' ' + 
+                                                        Name.split(' ')[Name.split(' ').length-1]
+                                                         + ' Aos favoritos',
+                                                      'id': 'favourite_' + Id },
+                                                    click:function(data,event) {$parent.updateFavourites(Id)}"
+                                        
                                     title="Adicionar aos favoritos">
                                     <i class="fa fa-heart-o"></i>
                                 </a>
