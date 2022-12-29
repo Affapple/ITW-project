@@ -24,20 +24,31 @@ let vm = function athletesTableViewModel() {
         games: [],
 
     }; 
-    atletasFavoritos=[]
 
+    self.loadFavourites = function(){
+        if (localStorage.getItem('favourites') != null){
+            self.favourites = JSON.parse(localStorage.favourites)
+        } else {
+            localStorage.setItem('favourites', JSON.stringify(self.favourites));
+        };
+
+        Favoritos = self.favourites.athletes;
+
+        Favoritos.forEach(id => {
+            $("#favourite_"+id).css('color','red');
+        });
+    }
 
     self.updateFavourites = function(id){
-        let index = atletasFavoritos.indexOf(String(id))
+        let index = Favoritos.indexOf(String(id))
         if(index !== -1){
             $("#favourite_"+id).css('color', '#333')
-            atletasFavoritos.splice(index, 1)
+            Favoritos.splice(index, 1)
         } else if(index == -1){
             $("#favourite_"+id).css('color', 'red')
-            atletasFavoritos.push(String(id))
+            Favoritos.push(String(id))
         };
-        
-        console.log(atletasFavoritos)
+        console.log(Favoritos)
         console.log(self.favourites);
         window.localStorage.setItem('favourites', JSON.stringify(self.favourites))
     }
@@ -99,13 +110,6 @@ let vm = function athletesTableViewModel() {
     function startLoading(page){
         showLoading();
 
-        if (localStorage.getItem('favourites') != null){
-            self.favourites = JSON.parse(localStorage.favourites)
-        } else {
-            localStorage.setItem('favourites', JSON.stringify(self.favourites));
-        };
-        atletasFavoritos = self.favourites.athletes;
-
         if (self.searchParams() == "") {
             composedUri = self.baseUri() + "/Athletes?page="+ page + "&pageSize=" + self.pageSize();
         } else {
@@ -129,9 +133,7 @@ let vm = function athletesTableViewModel() {
                 self.totalPages(parseInt(data.length/20 + 1));
 
             };
-            atletasFavoritos.forEach(id => {
-                $("#favourite_"+id).css('color','red');
-            });
+            self.loadFavourites();
 
             hideLoading();
         });
@@ -163,12 +165,6 @@ $(document).ready(function(){
     ko.applyBindings(new vm);
     self.hideLoading();
 });
-
-
-
-
-
-
 
 // funcoes gerais
 function getUrlParameter(sParam) {
