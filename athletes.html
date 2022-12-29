@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/index.css">
     <link href="./css/athletes.css" rel="stylesheet" />
 </head>
 
@@ -40,14 +41,31 @@
         </div>
     </nav>
     <!-- Trabalhar Aqui  -->
-    <div class="container mainContent">
+    <div class="container" style="margin-bottom:60px">
 
         <!-- Search Bar -->
-        <div class="border-bottom pt-4 pb-2 mb-3">
+        <div class="border-bottom pt-3 pb-2 mb-3">
             <div class="row my-3">
-                <div class="col-md-3">
+                <div class="col-3">
                     <h3>Atletas</h3>
                 </div>
+                <!-- <div class="col-3">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                            Filtrar por
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a onclick="self.sortBy('id')">Id</a></li>
+                            <li><a onclick="self.sortBy('nameUp')">Nome (Crescente)</a></li>
+                            <li><a onclick="self.sortBy('nameDown')">Nome (Decrescente)</a></li>
+                            <li><a onclick="self.sortBy('heightUp')">Altura (Crescente)</a></li>
+                            <li><a onclick="self.sortBy('heightDown')">Altura (Decrescente)</a></li>
+                            <li><a onclick="self.sortBy('id')">Sexo (Crescente)</a></li>
+                            <li><a onclick="self.sortBy('id')">Sexo (Decrescente)</a></li>
+                        </ul>
+                    </div>
+                </div> -->
                 <div class="col-12 col-md-6 float-right">
                     <div class="input-group form-group ">
                         <div class="form-floating">
@@ -73,42 +91,48 @@
                 <ul class="pagination d-flex justify-content-center justify-content-md-end">
                     <!-- ko if: currentPage() > 5 && totalPages() > 10 -->
                     <li class="page-item float-end"><a class="page-link small" title="First Page"
-                            data-bind="attr: { href: './athletes.html?page=' + '1' + '&search='+ searchParams(),  rel:'prev'}">⇤</a></li>
+                            data-bind="attr: { href: './athletes.html?page=' + '1' + '&search='+ searchParams(),  rel:'prev'}">⇤</a>
+                    </li>
                     <li class="page-item float-end"><a class="page-link small" title="Previous Page"
-                            data-bind="attr: { href: './athletes.html?page=' + previousPage()+ '&search='+ searchParams(),  rel:'prev'}">←</a></li>
+                            data-bind="attr: { href: './athletes.html?page=' + previousPage()+ '&search='+ searchParams(),  rel:'prev'}">←</a>
+                    </li>
 
                     <!-- /ko -->
                     <!-- ko foreach: pageArray()-->
-                        <!-- ko if:$data == $parent.currentPage() -->
+                    <!-- ko if:$data == $parent.currentPage() -->
                     <li class="active page-item"><a class="page-link small"
                             data-bind="attr: { title:'Current Page ' + $data }, text: $data"></a></li>
-                        <!-- /ko -->
-                        <!-- ko if:$data != $parent.currentPage() -->
+                    <!-- /ko -->
+                    <!-- ko if:$data != $parent.currentPage() -->
                     <li class="page-item"><a class="page-link small"
                             data-bind="attr: { href: './athletes.html?page=' + $data + '&search='+ $parent.searchParams(), title:'Goto Page ' + $data }, text:$data"></a>
                     </li>
-                        <!-- /ko -->
+                    <!-- /ko -->
                     <!-- /ko -->
 
                     <!-- ko if: currentPage() < totalPages() - 4 && totalPages() > 9 -->
                     <li class="page-item"><a class="page-link small" title="Next Page"
-                            data-bind="attr: { href: './athletes.html?page=' + nextPage() + '&search='+ searchParams(), rel:'next' }">→</a></li>
+                            data-bind="attr: { href: './athletes.html?page=' + nextPage() + '&search='+ searchParams(), rel:'next' }">→</a>
+                    </li>
                     <li class="page-item"><a class="page-link small" title="Last Page"
-                            data-bind="attr: { href: './athletes.html?page=' + totalPages() + '&search='+ searchParams() }">⇥</a></li>
+                            data-bind="attr: { href: './athletes.html?page=' + totalPages() + '&search='+ searchParams() }">⇥</a>
+                    </li>
                     <!-- /ko -->
                 </ul>
             </div>
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Página a Carregar</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <img src="../images/Olympic_rings.svg" height="30" /> Loading data...
+                        </h5>
                     </div>
-                    <div class="modal-body d-flex justify-content-center">
+                    <div class="modal-body text-center">
                         <i class="fa fa-spin fa-3x fa-refresh"></i>
                     </div>
                 </div>
@@ -134,19 +158,17 @@
                         <td data-bind="text: Sex"></td>
                         <td class="col-1">
                             <div class="d-flex justify-content-center">
-                                <a class="btn btn-default btn-secondary btn-sm mx-1"
+                                <a class="btn btn-default btn-xs mx-1"
                                     data-bind="attr: {href: './athletesDetails.html?id=' + Id, 'aria-label' : 'Ver detalhes completos de ' + Name[0] + ' ' + Name[Name.length]}"
                                     title="Ver detalhes">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a  class="btn btn-default btn-secondary btn-sm"
-                                    data-bind="attr: {'aria-label' : 'Adicionar ' + 
+                                <a class="btn btn-default btn-xs" data-bind="attr: {'aria-label' : 'Adicionar ' + 
                                                         Name.split(' ')[0]+ ' ' + 
                                                         Name.split(' ')[Name.split(' ').length-1]
                                                          + ' Aos favoritos',
                                                       'id': 'favourite_' + Id },
                                                     click:function(data,event) {$parent.updateFavourites(Id)}"
-                                        
                                     title="Adicionar aos favoritos">
                                     <i class="fa fa-heart-o"></i>
                                 </a>
@@ -158,20 +180,31 @@
             <!-- /ko -->
 
             <!-- ko ifnot: totalRecords() > 20 -->
-            <div class="d-flex flex-wrap">
+            <div class="container d-flex flex-wrap">
                 <!-- ko foreach: records() -->
-                <div class="card col-12 col-sm-6 col-md-4 col-lg-3 d-flex text-center">
-                    <h5 class="card-title small" data-bind="text:Name"></h5>
-                    <div class="card-body" style="margin:5px;">
-                        <!-- ko if: Photo != null -->
-                        <img class="card-img-top image" data-bind="attr: {'src':Photo, alt:Name}">
-                        <!-- /ko -->
+                <div class="col-12 col-sm-6 col-md-3 col-lg-2" style="padding:5px">
+                    <div class="card d-flex text-center gap-1" style="background:rgb(250,250,250); padding:5px">
+                        <h5 class="card-title small" data-bind="text:Name"></h5>
+                        <div class="card-body" style="margin:5px;">
+                            <!-- ko if: Photo != null -->
+                            <img class="my-2 card-img-top image" data-bind="attr: {'src':Photo, alt:Name}">
+                            <!-- /ko -->
 
-                        <!-- ko if: Photo == null -->
-                        <img class="my-2 card-img-top" src="images\rei.jpg" alt="Imagem Representativa">
-                        <!-- /ko -->
-                        <a data-bind="attr: {href: './athletesDetails.html?id=' + Id, 'aria-label' : 'Ver detalhes completos de ' + Name[0] + ' ' + Name[Name.length]}"
-                            class="btn btn-primary">Mais detalhes</a>
+                            <!-- ko if: Photo == null -->
+                            <img class="my-2 card-img-top" src="images\rei.jpg" alt="Imagem Representativa">
+                            <!-- /ko -->
+                            <a data-bind="attr: {href: './athletesDetails.html?id=' + Id, 'aria-label' : 'Ver detalhes completos de ' + Name[0] + ' ' + Name[Name.length]}"
+                                class="btn btn-primary ">Mais detalhes</a>
+                            <a class="btn btn-default" data-bind="attr: {'aria-label' : 'Adicionar ' + 
+                                                    Name.split(' ')[0]+ ' ' + 
+                                                    Name.split(' ')[Name.split(' ').length-1]
+                                                        + ' Aos favoritos',
+                                                    'id': 'favourite_' + Id },
+                                                click:function(data,event) {$parent.updateFavourites(Id)}"
+                                title="Adicionar aos favoritos">
+                                <i class="fa fa-heart-o"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <!-- /ko -->

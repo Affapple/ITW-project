@@ -1,15 +1,19 @@
-img {
+.image {
     border-radius: 4px;
     aspect-ratio: 3/2;
     object-fit: contain;
     max-width: fit-content;
 }
 .mainContent{
-    margin-top:60px; margin-bottom:60px;
+    margin-top:0px; margin-bottom:60px;
 }
 
 .card-body{
     padding:5px;
     padding-top: 0px;
 
+}
+
+.col-3.5{
+    width:29.16666666%;
 }

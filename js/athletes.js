@@ -30,7 +30,7 @@ let vm = function athletesTableViewModel() {
     self.updateFavourites = function(id){
         let index = atletasFavoritos.indexOf(String(id))
         if(index !== -1){
-            $("#favourite_"+id).css('color', 'white')
+            $("#favourite_"+id).css('color', '#333')
             atletasFavoritos.splice(index, 1)
         } else if(index == -1){
             $("#favourite_"+id).css('color', 'red')
