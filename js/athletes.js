@@ -18,9 +18,39 @@ let vm = function athletesTableViewModel() {
     self.totalRecords = ko.observable(1);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
-    self.searchParams= ko.observable(getUrlParameter('search'));
+    self.searchParams= ko.observable("");
     self.favourites = {
-        favs: [],
+        athletes: [],
+        games: [],
+
+    }; 
+
+    self.loadFavourites = function(){
+        if (localStorage.getItem('favourites') != null){
+            self.favourites = JSON.parse(localStorage.favourites)
+        } else {
+            localStorage.setItem('favourites', JSON.stringify(self.favourites));
+        };
+
+        Favoritos = self.favourites.athletes;
+
+        Favoritos.forEach(id => {
+            $("#favourite_"+id).css('color','red');
+        });
+    }
+
+    self.updateFavourites = function(id){
+        let index = Favoritos.indexOf(String(id))
+        if(index !== -1){
+            $("#favourite_"+id).css('color', '#333')
+            Favoritos.splice(index, 1)
+        } else if(index == -1){
+            $("#favourite_"+id).css('color', 'red')
+            Favoritos.push(String(id))
+        };
+        console.log(Favoritos)
+        console.log(self.favourites);
+        window.localStorage.setItem('favourites', JSON.stringify(self.favourites))
     }
 
 
@@ -79,8 +109,6 @@ let vm = function athletesTableViewModel() {
     
     function startLoading(page){
         showLoading();
-        // favourites
-        self.favourites = localStorage.getItem('favourites');
 
         if (self.searchParams() == "") {
             composedUri = self.baseUri() + "/Athletes?page="+ page + "&pageSize=" + self.pageSize();
@@ -103,8 +131,9 @@ let vm = function athletesTableViewModel() {
                 self.records(data.slice(20*(self.currentPage()-1), 20*(self.currentPage()) ));
                 self.totalRecords(data.length);
                 self.totalPages(parseInt(data.length/20 + 1));
-                console.log(self.records())
+
             };
+            self.loadFavourites();
 
             hideLoading();
         });
@@ -116,17 +145,19 @@ let vm = function athletesTableViewModel() {
         window.location.href = newURL
     })
 
+    
     // inicializar pedido
     var pg = getUrlParameter('page');
+    let srch = getUrlParameter('search')
+    if (srch != undefined){self.searchParams(srch)}
+    
     if (pg == undefined){
         startLoading(page = 1);
     } else {
         startLoading(page = pg)
     }
 
-    self.addtoFavs = function(id){
-        return true
-    }
+
 }
 
 $(document).ready(function(){
@@ -134,12 +165,6 @@ $(document).ready(function(){
     ko.applyBindings(new vm);
     self.hideLoading();
 });
-
-
-
-
-
-
 
 // funcoes gerais
 function getUrlParameter(sParam) {

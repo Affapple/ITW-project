@@ -39,6 +39,7 @@ let vm = function viewModel() {
                 console.log("AJAX Call[" + uri + "] Fail...");
                 hideLoading();
                 self.error(errorThrown);
+                alert(errorThrown)
             },
         })
     };
@@ -111,3 +112,17 @@ let vm = function viewModel() {
 $(document).ready(function () {
     ko.applyBindings(vm);
 });
+
+
+
+function showLoading() {
+    $("#loadingModal").modal('show', {
+        backdrop: 'static',
+        keyboard: false
+    });
+};
+function hideLoading() {
+    $('#loadingModal').on('shown.bs.modal', function (e) {
+        $("#loadingModal").modal('hide');
+    })
+};
