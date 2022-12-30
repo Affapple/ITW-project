@@ -41,24 +41,31 @@
             </div>
         </nav>
     </div>
-    <div style="margin-top: 200px; margin-bottom: 200px;">
+<div class="container" style=" margin-bottom: 50px;">
+    <div class="col-12 col-md-6 col-lg-9" style="margin-top: 50px;">
+        <div class="d-inline-flex mt-4" id="forms" style="width: 465px ; margin-left: auto; margin-right: auto;">
+            <input id="searchbar" class="form-control searchBar" type="search" placeholder="Search" aria-label="Search" style="margin-top: 0px; margin-left: 10px;">
+            <button style="margin-left: 5px;" class="fa fa-search btn btn-outline-success" id="lupa" type="submit" onclick="search()"></button>
+        </div>
+    </div>
+    <div >
         <div class="container mt-4">
             <div class="row ">
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row" data-bind="foreach: records">
                             <div class="col-lg-3 col-md-6 col-sm-12" style="height:370px;">
-                                <div class="card border-4" style="width:300px; height:350px; border-color: black;">
+                                <div class="card border-4" style="width:300px; height:350px; border-color: black; padding-top: 40px; padding-bottom: 70px;">
                                     <div style="margin-bottom: 10px; text-align: center; height: 100px;">
-                                        <h3><strong data-bind="text: Name"></strong></h3>
+                                        <a data-bind="text: Name, attr: { href:'./countryDetails.html/' + DriverId }"></a>
                                     </div>
-                                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                        <img data-bind="attr:{src: Flag}" height="170px" width="100%" />
+                                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light" style="display: flex; justify-content: center; align-items: center; ">
+                                        <img data-bind="attr:{src: Flag}" height="170px" width="100%"  />
                                         <a href="#!">
                                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                                         </a>
                                     </div>
-                                    <div class="card-footer">
+                                    <div class="card-footer" >
                                     </div>
                                 </div>
                             </div>

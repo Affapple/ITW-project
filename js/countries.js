@@ -135,3 +135,44 @@ $(document).ready(function () {
 $(document).ajaxComplete(function (event, xhr, options) {
     $("#myModal").modal('hide');
 })
+
+search = function() {
+    console.log("search")
+    self.search = $("#searchbar").val();
+    var changeuri = 'http://192.168.160.58/Olympics/api/Countries/SearchByName?q={q}' + self.search;
+    self.countriesList = [];
+    ajaxHelper(changeuri, 'GET').done(function(data) {
+        console.log(data);
+        showLoading();
+        if (self.filter != 'null') {
+            p = self.filter;
+            var auto = []
+            for (var a = 0; a < data.length; a++) {
+                var v = data[a];
+                if (v.Name == p) {
+                    auto.push(v);
+                }
+            }
+            self.records(auto);
+            self.totalRecords(auto.length);
+            for (var info in auto) {
+                self.countriesList.push(auto[info]);
+            }
+        } else {
+            self.records(data);
+            self.totalRecords(data.length);
+            for (var info in data) {
+                self.countriesList.push(data[info]);
+            }
+        }
+        $("#pagination").addClass("d-none");
+        $("#line").addClass("d-none");
+        $('#mapa').addClass("d-none");
+        hideLoading();
+    });
+}
+$(document).keypress(function(key) {
+    if (key.which == 13) {
+        search();
+    }
+});
