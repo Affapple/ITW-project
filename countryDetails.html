@@ -42,7 +42,7 @@
     </div>
 
 
-    <div class="container">
+    <div class="container" style="margin-top: 200px; margin-bottom: 200px;">
         <!-- ko if:Name().length > 0 -->
         <div class="imagem">
             <img class="img-thumbnail col-4 float-end rounded" style="max-width: 300px" data-bind="attr:{src: Flag}" />
@@ -57,9 +57,18 @@
                         <h6 style="margin-left: 20px" data-bind="text: Name"></h6>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <h2>IOC:</h2>
+                    </td>
+                    <td>
+                        <h6 style="margin-left: 20px" data-bind="text: Ioc"></h6>
+                    </td>
+                </tr>
+                
             <tr>
                 <td>
-                <h2>Events [<span data-bind="text: Events().length"></span>]:</h2>
+                    <h2>Events [<span data-bind="text: Events().length"></span>]:</h2>
                 </td>
             </tr>
             </table>
@@ -75,7 +84,30 @@
                     <i class="fa fa-dot-circle-o"></i>
                     <a
                     class="text-muted text-decoration-none"
-                    data-bind="text: Name + ' ('+Modality+')', attr: { href: './raceDetails.html?id=' + RaceId }"
+                    data-bind="text: Name + ' ('+Modality+')'"
+                    ></a>
+            </div>
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Participant [<span data-bind="text: Participant().length"></span>]:</h2>
+                </td>
+            </tr>
+            </table>
+            <table>
+            <tr>
+                <td
+                style="margin-left: 20px"
+                colspan="2"
+                class="small col-lg-12"
+                data-bind="foreach: Participant"
+                >
+                <div class="border rounded d-inline-block mr-2 mb-1 p-1">
+                    <i class="fa fa-dot-circle-o"></i>
+                    <a
+                    class="text-muted text-decoration-none"
+                    data-bind="text: Name + ' ('+CountryName+')'"
                     ></a>
             </div>
             </td>

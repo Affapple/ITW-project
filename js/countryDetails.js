@@ -1,42 +1,52 @@
-var vm = function viewModel() {
+var vm = function() {
+    console.log('ViewModel initiated...');
+    //---Variáveis locais
     var self = this;
-
     self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/Countries/');
-    self.Id = ko.observable("");
-    self.Name = ko.observable("");
-    self.Flag = ko.observable("");
-    self.Events = ko.observableArray("");
-    self.Participant = ko.observableArray("");
+    self.displayName = 'Country Details';
+    self.error = ko.observable('');
+    self.passingMessage = ko.observable('');
+    //--- Data Record
+    self.Id = ko.observable('');
+    self.Name = ko.observable('');
+    self.Ioc = ko.observable('');
+    self.Flag = ko.observable('');
+    self.Events = ko.observableArray('');
+    self.Participant = ko.observableArray('');
 
-    self.activate = function (id) {
-        console.log('CALL: getGame...');
+    //--- Page Events
+    self.activate = function(id) {
+        console.log('CALL: getCountry...');
         var composedUri = self.baseUri() + id;
-        ajaxHelper(composedUri, 'GET').done(function (data) {
+        ajaxHelper(composedUri, 'GET').done(function(data) {
             console.log(data);
-            hideLoading();
             self.Id(data.Id);
             self.Name(data.Name);
-            self.Flag(data.Flag);
+            self.Flag(data.Flag)
+            self.Ioc(data.IOC);
             self.Events(data.Events);
-            self.Participant(data.Participant);
+            self.Participant(data.Participant)
+
+
+            hideLoading();
         });
     };
-
     //--- Internal functions
     function ajaxHelper(uri, method, data) {
-        self.error(''); // Clear error message
+        self.error('');
         return $.ajax({
             type: method,
             url: uri,
             dataType: 'json',
             contentType: 'application/json',
             data: data ? JSON.stringify(data) : null,
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 console.log("AJAX Call[" + uri + "] Fail...");
                 hideLoading();
                 self.error(errorThrown);
             }
         });
+
     }
 
     function showLoading() {
@@ -45,8 +55,9 @@ var vm = function viewModel() {
             keyboard: false
         });
     }
+
     function hideLoading() {
-        $('#myModal').on('shown.bs.modal', function (e) {
+        $('#myModal').on('shown.bs.modal', function(e) {
             $("#myModal").modal('hide');
         })
     }
@@ -66,6 +77,30 @@ var vm = function viewModel() {
         }
     };
 
+    ko.bindingHandlers.jScrollPane = {
+        init: function(element, valueAccessor) {
+            var o = valueAccessor() || {};
+
+            // initialize
+            $(element).jScrollPane(o.options);
+
+            var reinit = function() {
+                var scroll = $(element).data("jsp");
+                if (scroll) {
+                    scroll.reinitialise();
+                }
+            };
+
+            $(window).resize(reinit);
+
+            if (o.subscribe) {
+                o.subscribe.subscribe(function() {
+                    setTimeout(reinit, 0);
+                });
+            }
+        }
+    };
+
     //--- start ....
     showLoading();
     var pg = getUrlParameter('id');
@@ -75,14 +110,9 @@ var vm = function viewModel() {
     else {
         self.activate(pg);
     }
-    console.log("VM initialized!");
 };
 
-$(document).ready(function () {
-    console.log("document.ready!");
+$(document).ready(function() {
+    console.log("ready!");
     ko.applyBindings(new vm());
 });
-
-$(document).ajaxComplete(function (event, xhr, options) {
-    $("#myModal").modal('hide');
-})
