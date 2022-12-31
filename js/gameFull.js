@@ -16,6 +16,16 @@ var vm = function () {
     self.Name = ko.observable('');
     self.Photo = ko.observable('');
     self.Season = ko.observable('');
+    self.estaçao = ko.computed(function(){
+        switch (self.Season()) {
+            case "Summer":
+                return "Verão"
+            case "Winter":
+                return "Inverno"
+            default:
+                return "No Info"
+        }
+    })
     self.Year = ko.observableArray('');
 
     self.Modalities = ko.observableArray([]);
@@ -34,13 +44,13 @@ var vm = function () {
         var composedUri = self.baseUri() + 'api/Games/FullDetails?id=' + id;
         pedidoAJAX(composedUri, 'GET').done(function (data) {
             data.Competitions.forEach(competition => {
-
                 if (competitionByModality[competition.Modality] == undefined){
-                    competitionByModality[competition.Modality]= [{'compName':competition.Name, 'modId': competition.Id}];
+                    competitionByModality[competition.Modality]= [{'compName':competition.Name, 'compId': competition.Id}];
                 } else {
-                    competitionByModality[competition.Modality].push({'compName':competition.Name, 'modId': competition.Id});
+                    competitionByModality[competition.Modality].push({'compName':competition.Name, 'compId': competition.Id});
                 }
             });
+            self.Season(data.Season);
             self.Id(data.Id);
             self.CountryName(data.CountryName);
             self.Name(data.Name);
@@ -50,14 +60,15 @@ var vm = function () {
             self.Modalities(data.Modalities);
             self.Medals(data.Medals);
             self.Competitions(data.Competitions)
+            
+            
+            
             let Paises= self.baseUri() + 'api/Countries/SearchByName?q=' + self.CountryName()
-            console.log(Paises)
             pedidoAJAX(Paises, 'GET').done(function (dados) {
                 self.bandeira(dados[0].Flag)
                 self.CountryId(dados[0].Id)
             });
 
-            
         });
         hideLoading()
     };
