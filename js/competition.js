@@ -2,8 +2,8 @@ var vm = function () {
     console.log('ViewModel initiated...');
     //---Variáveis locais
     var self = this;
-    self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/Modalities/');
-    self.displayName = 'Olympic Modalities editions List';
+    self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/Competitions');
+    self.displayName = 'Competitions List';
     self.error = ko.observable('');
     self.passingMessage = ko.observable('');
     self.records = ko.observableArray([]);
@@ -12,7 +12,6 @@ var vm = function () {
     self.totalRecords = ko.observable(50);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
-    self.Name = ko.observable("");
 
     self.favourites = {
         athletes: [],
@@ -98,7 +97,6 @@ var vm = function () {
             self.totalPages(data.TotalPages);
             self.totalRecords(data.TotalRecords);
             self.loadFavourites();
-            self.Name(data.Name);
         });
     };
 
@@ -171,3 +169,4 @@ $(document).ready(function () {
 $(document).ajaxComplete(function (event, xhr, options) {
     $("#myModal").modal('hide');
 })
+
