@@ -69,18 +69,20 @@
         <div class="row d-fex justify-content-between border-bottom my-3">
 
             <!-- Imagem Atleta  -->
-            <div class="mw100 col-md-4 d-flex justify-content-center">
-                <!-- ko if: Photo -->
-                <figure class="display:flex">
-                    <a data-bind="attr :{href:OlympLink}"><img class="image" id="foto" data-bind="attr: {'src':Photo, alt:Name}"></a>
-                    <figcaption class="small">
-                        <a data-bind="text:Photo, attr: {href:Photo}"></a>
-                    </figcaption>
-                </figure>
-                <!-- /ko -->
-                <!-- ko ifnot: Photo -->
-                <img class="image" src="images\rei.jpg" alt="Imagem Representativa">
-                <!-- /ko -->
+            <div class="mw-100 col-12 col-md-4 d-flex justify-content-center">
+                    <!-- ko if: Photo -->
+                    <figure style="transform: translateX(16.67%);">
+                        <a data-bind="attr :{href:OlympLink}">
+                            <img class="image" id="foto" data-bind="attr: {'src':Photo, alt:Name}">
+                        </a>
+                        <figcaption class="small">
+                            <a data-bind="text:Photo, attr: {href:Photo}"></a>
+                        </figcaption>
+                    </figure>
+                    <!-- /ko -->
+                    <!-- ko ifnot: Photo -->
+                    <img class="image" src="images\rei.jpg" alt="Imagem Representativa">
+                    <!-- /ko -->
             </div>
 
 
