@@ -17,7 +17,8 @@ var vm = function () {
     self.favourites = {
         athletes: [],
         games: [],
-
+        modalities : [],
+        competitions : []
     }; 
 
     self.loadFavourites = function(){

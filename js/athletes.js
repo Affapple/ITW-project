@@ -22,7 +22,8 @@ let vm = function athletesTableViewModel() {
     self.favourites = {
         athletes: [],
         games: [],
-
+        modalities : [],
+        competitions : []
     }; 
 
     self.loadFavourites = function(){
