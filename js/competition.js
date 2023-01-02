@@ -2,7 +2,8 @@ var vm = function () {
     console.log('ViewModel initiated...');
     //---Variáveis locais
     var self = this;
-    self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/Competitions');
+    self.search = '';
+    self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/Competitions/');
     self.displayName = 'Competitions List';
     self.error = ko.observable('');
     self.passingMessage = ko.observable('');
@@ -12,6 +13,7 @@ var vm = function () {
     self.totalRecords = ko.observable(50);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
+    self.filter = 'null';
 
     self.favourites = {
         Athletes: [],
@@ -99,7 +101,22 @@ var vm = function () {
             self.totalRecords(data.TotalRecords);
             self.loadFavourites();
         });
+        composedUri2 = self.baseUri();
+        ajaxHelper(composedUri2, 'GET').done(function(data) {
+            hideLoading();
+            var tags = [];
+            for (var x = 0; x < data.Total; x++) {
+                var c = data.List[x];
+                tags.push(c.Name);
+            };
+            console.log(tags)
+            $("#searchbar").autocomplete({
+                minLength: 3,
+                source: tags
+            });
+        });
     };
+    
 
     //--- Internal functions
     function ajaxHelper(uri, method, data) {
@@ -129,6 +146,8 @@ var vm = function () {
             keyboard: false
         });
     }
+
+
     function hideLoading() {
         $('#myModal').on('shown.bs.modal', function (e) {
             $("#myModal").modal('hide');
@@ -161,6 +180,114 @@ var vm = function () {
     }
     console.log("VM initialized!");
 };
+
+    search = function() {
+        console.log("search")
+        self.search = $("#searchbar").val();
+        var changeuri = 'http://192.168.160.58/Olympics/api/Competitions/SearchByName?q=' + $("#searchbar").val();
+        self.competitionslist = [];
+        ajaxHelper(changeuri, 'GET').done(function(data) {
+            console.log(data);
+            showLoading();
+            if (self.filter != 'null') {
+                p = self.filter;
+                var auto = []
+                for (var a = 0; a < data.length; a++) {
+                    var v = data[a];
+                    if (v.Modality == p) {
+                        auto.push(v);
+                    }
+                }
+                self.records(auto);
+                self.totalRecords(auto.length);
+                for (var info in auto) {
+                    self.competitionslist.push(auto[info]);
+                }
+            } else {
+                self.records(data);
+                self.totalRecords(data.length);
+                for (var info in data) {
+                    self.competitionslist.push(data[info]);
+                }
+            }
+            $("#pagination").addClass("d-none");
+            $("#line").addClass("d-none");
+            hideLoading();
+        });
+    }
+    $(document).keypress(function(key) {
+        if (key.which == 13) {
+            search();
+        }
+    });
+
+    $(".countryFilter").change(function() {
+
+        p = $(this).children("option:selected").val();
+        self.filter = p;
+        if (p != 'null') {
+            showLoading();
+            var url = '';
+            if (self.search != '') {
+                url = 'http://192.168.160.58/Olympics/api/Competitions/SearchByName?q=' + self.search;
+            } else {
+                url = self.baseUri();
+            }
+            ajaxHelper(url, 'GET').done(function(data) {
+                var auto = [];
+                if (self.search != '') {
+                    for (var a = 0; a < data.length; a++) {
+                        var v = data[a];
+                        if (v.Modality == p) {
+                            auto.push(v);
+                        }
+                    }
+                } else {
+                    for (var a = 0; a < data.List.length; a++) {
+                        var v = data.List[a];
+                        if (v.Modality == p) {
+                            auto.push(v);
+                        }
+                    }
+                }
+                self.records(auto);
+                self.totalRecords(auto.length);
+                $("#pagination").addClass("d-none");
+                $("#line").addClass("d-none");
+                $('#mapa').addClass("d-none")
+            })
+            hideLoading();
+        } else {
+            showLoading();
+            var url = '';
+            if (self.search != '') {
+                url = 'http://192.168.160.58/Olympics/api/Competitions/SearchByName?q=' + self.search;
+            } else {
+                url = self.baseUri();
+            }
+            ajaxHelper(url, 'GET').done(function(data) {
+                var auto = [];
+                if (self.search != '') {
+                    for (var a = 0; a < data.length; a++) {
+                        var v = data[a];
+                        auto.push(v);
+                    }
+                } else {
+                    for (var a = 0; a < data.List.length; a++) {
+                        var v = data.List[a];
+                        auto.push(v);
+                    }
+                }
+                self.records(auto);
+                self.totalRecords(auto.length);
+                $("#pagination").addClass("d-none");
+                $("#line").addClass("d-none");
+                $('#mapa').addClass("d-none")
+            })
+            hideLoading();
+        }
+
+    });
 
 $(document).ready(function () {
     console.log("ready!");

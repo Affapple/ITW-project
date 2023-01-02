@@ -86,9 +86,9 @@
                     <i class="fa fa-dot-circle-o"></i>
                     <a
                     class="text-muted text-decoration-none"
-                    data-bind="text: Name + ' ('+Modality+')'"
-                    ></a>
-            </div>
+                    data-bind=" attr: {href: './competitionsDetails.html?id=' + Id } "
+                    ><span data-bind="text: Name" ></span> (<span data-bind="text: Modality"></span>)</a>
+                </div>
             </td>
             </tr>
             <tr>
