@@ -4,7 +4,7 @@ var vm = function () {
     //---Variáveis locais
     var self = this;
     self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/games');
-    self.displayName = 'Olympic Games editions List';
+    self.displayName = 'Jogos Olimpicos';
     self.error = ko.observable('');
     self.passingMessage = ko.observable('');
     self.records = ko.observableArray([]);
@@ -13,6 +13,12 @@ var vm = function () {
     self.totalRecords = ko.observable(50);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
+
+    self.edition = ko.computed(function(){
+        var edicao = getUrlParameter('edition')
+        if (edicao == undefined) {return "0";}
+        return edicao
+    },self);
 
     self.favourites = {
         athletes: [],
@@ -86,8 +92,20 @@ var vm = function () {
 
     //--- Page Events
     self.activate = function (id) {
+        console.log(self.edition())
+
+        $('input[name=edition]').val([self.edition()]);
         console.log('CALL: getGames...');
-        var composedUri = self.baseUri() + "?page=" + id + "&pageSize=" + self.pagesize();
+        switch (self.edition()){
+            case '1':
+                var composedUri = self.baseUri() + "?season=" + self.edition() + "&page=" + id + "&pageSize=" + self.pagesize();
+                break;
+            case '2':
+                var composedUri = self.baseUri() + "?season=" + self.edition() + "&page=" + id + "&pageSize=" + self.pagesize();
+                break;
+            default:
+                var composedUri = self.baseUri() + "?page=" + id + "&pageSize=" + self.pagesize();
+        }
         ajaxHelper(composedUri, 'GET').done(function (data) {
             console.log(data);
             hideLoading();
@@ -154,13 +172,17 @@ var vm = function () {
     //--- start ....
     showLoading();
     var pg = getUrlParameter('page');
-    console.log(pg);
     if (pg == undefined)
         self.activate(1);
     else {
         self.activate(pg);
     }
     console.log("VM initialized!");
+
+    $('input[name=edition]').change(function(){
+        newURL = '//' + location.host + location.pathname + '?page=1&edition=' + $(this).val();
+        window.location.href = newURL
+    })
 };
 
 $(document).ready(function () {
