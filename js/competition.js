@@ -14,10 +14,10 @@ var vm = function () {
     self.hasNext = ko.observable(false);
 
     self.favourites = {
-        athletes: [],
-        games: [],
-        modalities : [],
-        competitions : []
+        Athletes: [],
+        Games: [],
+        Modalities : [],
+        Competitions : []
     }; 
 
     self.loadFavourites = function(){
@@ -27,7 +27,7 @@ var vm = function () {
             localStorage.setItem('favourites', JSON.stringify(self.favourites));
         };
 
-        Favoritos = self.favourites.competitions;
+        Favoritos = self.favourites.Competitions;
 
         Favoritos.forEach(id => {
             $("#favourite_"+id).css('color','red');

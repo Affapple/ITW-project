@@ -21,10 +21,10 @@ var vm = function () {
     },self);
 
     self.favourites = {
-        athletes: [],
-        games: [],
-        modalities : [],
-        competitions : []
+        Athletes: [],
+        Games: [],
+        Modalities : [],
+        Competitions : []
     }; 
 
     self.loadFavourites = function(){
@@ -34,7 +34,7 @@ var vm = function () {
             localStorage.setItem('favourites', JSON.stringify(self.favourites));
         };
 
-        Favoritos = self.favourites.games;
+        Favoritos = self.favourites.Games;
 
         Favoritos.forEach(id => {
             $("#favourite_"+id).css('color','red');

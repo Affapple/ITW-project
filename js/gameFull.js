@@ -16,6 +16,10 @@ var vm = function () {
     self.Name = ko.observable('');
     self.Photo = ko.observable('');
     self.Season = ko.observable('');
+    
+    self.AthletesNumber = ko.observable(0);
+    self.CountriesNumber = ko.observable(0);
+
     self.estaçao = ko.computed(function(){
         switch (self.Season()) {
             case "Summer":
@@ -60,8 +64,7 @@ var vm = function () {
             self.Modalities(data.Modalities);
             self.Medals(data.Medals);
             self.Competitions(data.Competitions)
-            
-            
+            self.AthletesNumber(data.Athletes.length)
             
             let Paises= self.baseUri() + 'api/Countries/SearchByName?q=' + self.CountryName()
             pedidoAJAX(Paises, 'GET').done(function (dados) {
@@ -70,7 +73,14 @@ var vm = function () {
             });
 
         });
-        hideLoading()
+
+        // Get number of countries who joined 
+        composedUri = self.baseUri() + 'api/Statistics/Games_Countries'
+        pedidoAJAX(composedUri, 'GET').done(function (data) {
+            self.CountriesNumber(data[id].Counter)
+        });
+        hideLoading();
+
     };
 
     //--- Internal functions
