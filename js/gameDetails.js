@@ -3,7 +3,7 @@ var vm = function () {
     console.log('ViewModel initiated...');
     //---Variáveis locais
     var self = this;
-    self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/Games/');
+    self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/');
     self.displayName = 'Olympic Games edition Details';
     self.error = ko.observable('');
     self.passingMessage = ko.observable('');
@@ -17,13 +17,15 @@ var vm = function () {
     self.Year = ko.observableArray('');
     self.Url = ko.observable('');
 
+    self.AthletesNumber = ko.observable(0);
+    self.CountriesNumber = ko.observable(0);
+
     //--- Page Events
     self.activate = function (id) {
         console.log('CALL: getGame...');
-        var composedUri = self.baseUri() + id;
+        var composedUri = self.baseUri() + 'Games/' + id;
         ajaxHelper(composedUri, 'GET').done(function (data) {
             console.log(data);
-            hideLoading();
             self.Id(data.Id);
             self.CountryName(data.CountryName);
             self.Logo(data.Logo);
@@ -31,7 +33,16 @@ var vm = function () {
             self.Photo(data.Photo);
             self.Season(data.Season);
             self.Year(data.Year);
+            self.AthletesNumber(data.Athletes.length)
         });
+
+        // Get number of countries who joined 
+        composedUri = self.baseUri() + 'Statistics/Games_Countries'
+        ajaxHelper(composedUri, 'GET').done(function (data) {
+            self.CountriesNumber(data[id].Counter)
+        });
+        hideLoading();
+
     };
 
     //--- Internal functions
