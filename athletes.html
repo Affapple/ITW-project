@@ -47,7 +47,7 @@
         <div class="border-bottom pt-3 pb-2 mb-3">
             <div class="row my-3">
                 <div class="col-3">
-                    <h3>Atletas</h3>
+                    <h3>Athletes</h3>
                 </div>
                 <!-- <div class="col-3">
                     <div class="dropdown">
@@ -71,7 +71,8 @@
                         <div class="form-floating">
                             <input type="search" placeholder="text" aria-label="Pesquisar Atleta" id="searchArgs"
                                 class="form-control form-control-sm" onsearch="$('#search').click()" />
-                            <label for="searchArgs" class="form-label">Pesquisar Atleta</label>
+                            <label for="searchArgs" class="form-label">Search
+                            </label>
                         </div>
                         <button type="button" id="search" class="btn btn-primary">
                             <i class="fa fa-search"></i>
@@ -146,8 +147,8 @@
                 <thead>
                     <tr>
                         <th class="d-none" id="id">Id</th>
-                        <th span="col">Nome</th>
-                        <th span="col">Sexo</th>
+                        <th span="col">Name</th>
+                        <th span="col">Sex</th>
                         <th span="col"></th>
                     </tr>
                 </thead>
@@ -194,7 +195,7 @@
                             <img class="my-2 card-img-top" src="images\rei.jpg" alt="Imagem Representativa">
                             <!-- /ko -->
                             <a data-bind="attr: {href: './athletesDetails.html?id=' + Id, 'aria-label' : 'Ver detalhes completos de ' + Name[0] + ' ' + Name[Name.length]}"
-                                class="btn btn-primary ">Mais detalhes</a>
+                                class="btn btn-primary ">More details</a>
                             <a class="btn btn-default" data-bind="attr: {'aria-label' : 'Adicionar ' + 
                                                     Name.split(' ')[0]+ ' ' + 
                                                     Name.split(' ')[Name.split(' ').length-1]

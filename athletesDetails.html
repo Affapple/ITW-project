@@ -89,8 +89,8 @@
             <!-- Informacoes atleta  -->
             <ul class="col-7 col-md-3 list-group my-3">
                 <li class="list-group-item d-flex flex-wrap">
-                    <span class="col-6">Peso: <span data-bind="text:Weight"></span> Kg</span>
-                    <span class="col-6">Altura: <span data-bind="text:Height"></span> cm</span>
+                    <span class="col-6">Weight: <span data-bind="text:Weight"></span> Kg</span>
+                    <span class="col-6">Height: <span data-bind="text:Height"></span> cm</span>
                 </li>
 
                 <li class="list-group-item d-flex flex-wrap">
@@ -107,7 +107,7 @@
                 
                 <!-- ko if: Modalidades().length > 0  -->
                 <li class="list-group-item d-flex flex-wrap">
-                    <span class="col-6">Modalidades:</span>
+                    <span class="col-6">Modalities:</span>
                     <span class="col-6" data-bind="foreach: Modalidades">
                         <a class="link-dark text-decoration-none"
                             data-bind="attr: {href: './modalidades?id=' + Id}">
@@ -139,13 +139,13 @@
 
         <!-- ko if: Competitions().length >0 -->
         <div id="comps" class="row ">
-            <label for="comps"><h5>Competições</h5></label>
+            <label for="comps"><h5>Competitions:</label>
             <table>
                 <tr>
                     <td style="margin-left: 20px" colspan="2" class="small col-lg-12" data-bind="foreach: Competitions">
                         <div class="border rounded d-inline-block mr-2 mb-1 p-1">
                             <i class="fa fa-dot-circle-o"></i>
-                            <a  class="text-muted text-decoration-none" data-bind="attr: { href: './CompetitionDetails.html?id=' + Id }">
+                            <a  class="text-muted text-decoration-none" data-bind="attr: { href: './competitionsDetails.html?id=' + Id }">
                                 <span data-bind="text: Name" ></span>
                             </a>
                         </div>
@@ -156,13 +156,13 @@
         <!-- /ko -->
         <!-- ko if: Games().length > 0 -->
         <div id="edc" class="row my-3">
-            <label for="edc"><h5>Ediçoes Presentes</h5></label>
+            <label for="edc"><h5>Participated in:</h5></label>
             <table>
                 <tr>
                     <td style="margin-left: 20px" colspan="2" class="small col-lg-12" data-bind="foreach: Games">
                         <div class="border rounded d-inline-block mr-2 mb-1 p-1">
                             <img style="height:2rem" data-bind="attr: {src:Logo}"></img>
-                            <a  class="text-muted text-decoration-none" data-bind="attr: { href: './GameDetails.html?id=' + Id }">
+                            <a  class="text-muted text-decoration-none" data-bind="attr: { href: './gsameDetails.html?id=' + Id }">
                                 <span data-bind="text: Name" ></span> (<span data-bind="text: CountryName"></span>)
                             </a>
                         </div>
