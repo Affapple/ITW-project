@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- ko foreach: Athletes -->
+                    <!-- ko foreach: Athletes() -->
                     <tr>
                         <td colspan="1" data-bind="text: $data.Id" class="small"></td>
                         <td colspan="2" data-bind="text: $data.Name"></td>
@@ -106,7 +106,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- ko foreach: Games -->
+                    <!-- ko foreach: Games() -->
                     <tr>
                         <td colspan="1" data-bind="text: Id" class="small"></td>
                         <td colspan="2" data-bind="text: Name"></td>
@@ -144,7 +144,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- ko foreach: Modalities -->
+                    <!-- ko foreach: Modalities() -->
                     <tr>
                         <td colspan="1" data-bind="text: Id" class="small"></td>
                         <td colspan="2" data-bind="text: Name"></td>
@@ -182,7 +182,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- ko foreach: Competitions -->
+                    <!-- ko foreach: Competitions() -->
                     <tr>
                         <td colspan="1" data-bind="text: Id" class="small"></td>
                         <td colspan="2" data-bind="text: Name"></td>
@@ -225,7 +225,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-    <script src="js/favoritos.js"></script>
+    <script src="js/favourites.js"></script>
 </body>
 
 </html>

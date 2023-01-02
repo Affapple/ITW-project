@@ -185,17 +185,19 @@
             <!-- ko ifnot: totalRecords() > 20 -->
             <div class="container d-flex flex-wrap">
                 <!-- ko foreach: records() -->
-                <div class="col-12 col-sm-6 col-md-3 col-lg-2" style="padding:5px">
-                    <div class="card d-flex text-center gap-1" style="background:rgb(250,250,250); padding:5px">
-                        <h5 class="card-title small" data-bind="text:Name"></h5>
-                        <div class="card-body" style="margin:5px;">
-                            <!-- ko if: Photo != null -->
-                            <img class="my-2 card-img-top image" data-bind="attr: {'src':Photo, alt:Name}">
-                            <!-- /ko -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 py-3" style="padding:5px">
+                    <div class="card d-flex text-center" style="background:rgb(250,250,250);">
+                        <!-- ko if: Photo != null -->
+                        <img class="card-img-top image" data-bind="attr: {'src':Photo, alt:Name}">
+                        <!-- /ko -->
 
-                            <!-- ko if: Photo == null -->
-                            <img class="my-2 card-img-top" src="images\rei.jpg" alt="Imagem Representativa">
-                            <!-- /ko -->
+                        <!-- ko if: Photo == null -->
+                        <img class="card-img-top img-fluid" src="images\rei.jpg" alt="Imagem Representativa">
+                        <!-- /ko -->
+                        <div class="card-body" style="margin:5px;">
+    
+                            <h4 class="card-title small text-center" data-bind="text:Name"></h4>
+
                             <a data-bind="attr: {href: './athletesDetails.html?id=' + Id, 'aria-label' : 'Ver detalhes completos de ' + Name[0] + ' ' + Name[Name.length]}"
                                 class="btn btn-primary ">More details</a>
                             <a class="btn btn-default" data-bind="attr: {'aria-label' : 'Adicionar ' + 

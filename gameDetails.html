@@ -61,8 +61,8 @@
         <div class="row border-bottom mx-0 my-1 d-flex justify-content-between">
 
             <div class="col-3 text-center">
-                <p><b>Época:</b></p>
-                <p data-bind="text:estaçao"></p>
+                <p><b>Season:</b></p>
+                <p data-bind="text:Season"></p>
             </div>
 
             <div class="border-right separator"></div>
@@ -82,18 +82,16 @@
             <div class="border-left separator"></div>
 
             <div class="col-3 text-center">
-                <p>Nesta edição paticiparam:</p>
-                <p>
-                    <b><span data-bind="text:AthletesNumber"></span></b>
-                    Atletas
-                </p>
-                <p> De <b><span data-bind="text:CountriesNumber"></span></b> Países</p>
+                In this edition: <br>
+                <b><span data-bind="text:AthletesNumber"></span></b> Athletes <br>
+                 From <b><span data-bind="text:CountriesNumber"></span></b> countries <br>
+                Have participated
             </div>
         </div>
 
         <div class="row" style="margin-bottom:60px;">
             <div class="col-12">
-                <h5> Competições Disputadas</h5>
+                <h5> Competitions Played</h5>
             </div>
             <div class="container d-flex flex-wrap gap-1 justify-content-center">
                 <!-- ko foreach: Modalities() -->

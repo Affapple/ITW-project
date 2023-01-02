@@ -20,16 +20,6 @@ var vm = function () {
     self.AthletesNumber = ko.observable(0);
     self.CountriesNumber = ko.observable(0);
 
-    self.estaçao = ko.computed(function(){
-        switch (self.Season()) {
-            case "Summer":
-                return "Verão"
-            case "Winter":
-                return "Inverno"
-            default:
-                return "No Info"
-        }
-    })
     self.Year = ko.observableArray('');
 
     self.Modalities = ko.observableArray([]);
