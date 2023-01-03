@@ -1,3 +1,11 @@
+// ViewModel KnockOut
+let api_url
+let searchSelected
+const tooltips = document.querySelectorAll('.tt')
+tooltips.forEach(t => {
+    new bootstrap.Tooltip(t)
+});
+
 var vm = function () {
     console.log('ViewModel initiated...');
     //---Variáveis locais
@@ -169,56 +177,61 @@ var vm = function () {
         }
     };
 
-    //--- start ....
-    showLoading();
-    var pg = getUrlParameter('page');
-    console.log(pg);
-    if (pg == undefined)
-        self.activate(1);
-    else {
-        self.activate(pg);
-    }
-    console.log("VM initialized!");
-};
-
-    search = function() {
-        console.log("search")
-        self.search = $("#searchbar").val();
-        var changeuri = 'http://192.168.160.58/Olympics/api/Competitions/SearchByName?q=' + $("#searchbar").val();
-        self.competitionslist = [];
-        ajaxHelper(changeuri, 'GET').done(function(data) {
+    search = function () {
+        console.log("search");
+        var api = 'http://192.168.160.58/Olympics/api/Competitions/SearchByName?q=' + $("#searchArgs").val();
+        self.countrieslist = [];
+        ajaxHelper(api,'GET').done(function(data){
             console.log(data);
             showLoading();
-            if (self.filter != 'null') {
-                p = self.filter;
-                var auto = []
-                for (var a = 0; a < data.length; a++) {
-                    var v = data[a];
-                    if (v.Modality == p) {
-                        auto.push(v);
-                    }
-                }
-                self.records(auto);
-                self.totalRecords(auto.length);
-                for (var info in auto) {
-                    self.competitionslist.push(auto[info]);
-                }
-            } else {
-                self.records(data);
-                self.totalRecords(data.length);
-                for (var info in data) {
-                    self.competitionslist.push(data[info]);
-                }
-            }
-            $("#pagination").addClass("d-none");
-            $("#line").addClass("d-none");
+            self.records(data);
+            $('#pagination').addClass("d-none");
+            $('#line').addClass("d-none");
+            self.totalRecords(data.length);
             hideLoading();
+            for (var info in data) {
+                self.countrieslist.push(data[info]);
+            }
         });
     }
-    $(document).keypress(function(key) {
-        if (key.which == 13) {
-            search();
-        }
+
+    $("#searchArgs").autocomplete({ 
+        minLength: 2,
+        source: function(request, response) {
+            $.ajax({
+                type: "GET",
+                url : "http://192.168.160.58/Olympics/api/Competitions/SearchByName",
+                data: { 
+                    q: $('#searchArgs').val().toLowerCase()
+                },
+                success: function(data) {
+                    if (!data.length) {
+                        var result = [{
+                            label: 'No results found.',
+                            value: response.term,
+                            source: " "
+                        }];
+                        response(result);
+                    } else {
+                        var nData = $.map(data, function(value, key){
+                            return {
+                                label: value.Name,
+                                value: value.Id,
+                                source: "SearchByName"
+                            }
+                        });
+                        results = $.ui.autocomplete.filter(nData, request.term);
+                        response(results);
+                    }
+                },
+                error: function(){
+                    alert("error");
+                }
+            }) 
+        },
+        select: function(event, ui) {
+           window.location.href = "./competitionsDetails.html?id=" + ui.item.value;
+        },
     });
 
     $(".countryFilter").change(function() {
@@ -288,6 +301,27 @@ var vm = function () {
         }
 
     });
+
+
+    //--- start ....
+    showLoading();
+    var pg = getUrlParameter('page');
+    console.log(pg);
+    if (pg == undefined)
+        self.activate(1);
+    else {
+        self.activate(pg);
+    }
+    console.log("VM initialized!");
+};
+
+
+    $(document).keypress(function(key) {
+        if (key.which == 13) {
+            search();
+        }
+    });
+
 
 $(document).ready(function () {
     console.log("ready!");
