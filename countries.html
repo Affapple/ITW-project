@@ -21,8 +21,8 @@
                 <a class="navbar-brand" href="index.html" tabindex="Olympics"><img src="images\Olympic_rings.svg"
                         height="24" alt="Jogos Olimpicos" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -38,83 +38,96 @@
                         <li class="nav-item"><a class="nav-link" aria-current="page" href="modalities.html"><i
                                     class="fa fa-soccer-ball-o text-primary"></i> Modalities</a></li>
                         <li class="nav-item"><a class="nav-link" aria-current="page" href="favourites.html"><i
-                            class="fa fa-heart text-danger"></i> Favourites</a></li>
+                                    class="fa fa-heart text-danger"></i> Favourites</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
-<div class="container" style=" margin-bottom: 50px;">
-    <div class="col-12 col-md-6 col-lg-9" style="margin-top: 50px;">
-        <div class="d-inline-flex mt-4" id="forms" style="width: 465px ; margin-left: auto; margin-right: auto;">
-            <input id="searchArgs" class="form-control" type="text" placeholder="Search" aria-label="Search" name="searchbar" style="margin-top: 0px; margin-left: 10px;">
-            <button style="margin-left: 5px;" class="fa fa-search btn btn-outline-success" id="searchBar1" type="submit" onclick="search()"></button>
-        </div> 
-    </div>
-    <div >
-        <div class="container mt-4">
-            <div class="row ">
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row" data-bind="foreach: records">
-                            <div class="col-lg-3 col-md-6 col-sm-12" style="height:370px;">
-                                <div class="card border-4" style="width:300px; height:350px; border-color: black; padding-top: 40px; padding-bottom: 70px;">
-                                    <div style="margin-bottom: 10px; text-align: center; height: 100px;">
-                                        <a class="h3s" data-bind="text: Name, attr: { href:'./countryDetails.html?id=' + Id }"></a>
-                                    </div>
-                                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light" style="display: flex; justify-content: center; align-items: center; ">
-                                        <img data-bind="attr:{src: Flag}" height="170px" width="100%"  />
-                                        <a href="#!">
-                                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                                        </a>
-                                    </div>
-                                    <div class="card-footer" >
+    
+    <div class="container" style=" margin-bottom: 50px;">
+        <div class="col-12 col-md-6 col-lg-9" style="margin-top: 50px;">
+            <div class="d-inline-flex mt-4" id="forms" style="width: 465px ; margin-left: auto; margin-right: auto;">
+                <input id="searchArgs" class="form-control" type="text" placeholder="Search" aria-label="Search"
+                    name="searchbar" style="margin-top: 0px; margin-left: 10px;">
+                <button style="margin-left: 5px;" class="fa fa-search btn btn-outline-success" id="searchBar1"
+                    type="submit" onclick="search()"></button>
+            </div>
+        </div>
+        <div>
+            <div class="container mt-4">
+                <div class="row ">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row" data-bind="foreach: records">
+                                <div class="col-lg-3 col-md-6 col-sm-12" style="height:370px;">
+                                    <div class="card border-4"
+                                        style="width:300px; height:350px; border-color: black; padding-top: 40px; padding-bottom: 70px;">
+                                        <div style="margin-bottom: 10px; text-align: center; height: 100px;">
+                                            <a class="h3s"
+                                                data-bind="text: Name, attr: { href:'./countryDetails.html?id=' + Id }"></a>
+                                        </div>
+                                        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light"
+                                            style="display: flex; justify-content: center; align-items: center; ">
+                                            <img data-bind="attr:{src: Flag}" height="170px" width="100%" />
+                                            <a href="#!">
+                                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);">
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="card-footer">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="backend">
+                            
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Paginaçao -->
-        <div class="row">
-            <p class="col-md-4 my-0 mr-auto pt-2 small">
-                <span data-bind="html: 'Page: ' + currentPage() + ' de ' + totalPages()" class="small"></span><br />
-                <span data-bind="html: 'Entradas: '+ fromRecord() + '-' + toRecord() + ' de ' + totalRecords()"
-                    class="small"></span>
-            </p>
-            <div class="col-md-8 my-0 pt-3 sm">
-                <ul class="pagination d-flex justify-content-center justify-content-md-end">
-                    <!-- ko if: currentPage() > 5 && totalPages() > 10 -->
-                    <li class="page-item float-end"><a class="page-link small" title="First Page"
-                            data-bind="attr: { href: './countries.html?page=' + '1',  rel:'prev'}">⇤</a></li>
-                    <li class="page-item float-end"><a class="page-link small" title="Previous Page"
-                            data-bind="attr: { href: './countries.html?page=' + previousPage(),  rel:'prev'}">←</a></li>
+            <!-- Paginaçao -->
+            <div class="row">
+                <p class="col-md-4 my-0 mr-auto pt-2 small">
+                    <span data-bind="html: 'Page: ' + currentPage() + ' de ' + totalPages()" class="small"></span><br />
+                    <span data-bind="html: 'Entradas: '+ fromRecord() + '-' + toRecord() + ' de ' + totalRecords()"
+                        class="small"></span>
+                </p>
+                <div class="col-md-8 my-0 pt-3 sm">
+                    <ul class="pagination d-flex justify-content-center justify-content-md-end">
+                        <!-- ko if: currentPage() > 5 && totalPages() > 10 -->
+                        <li class="page-item float-end"><a class="page-link small" title="First Page"
+                                data-bind="attr: { href: './countries.html?page=' + '1',  rel:'prev'}">⇤</a></li>
+                        <li class="page-item float-end"><a class="page-link small" title="Previous Page"
+                                data-bind="attr: { href: './countries.html?page=' + previousPage(),  rel:'prev'}">←</a>
+                        </li>
 
-                    <!-- /ko -->
-                    <!-- ko foreach: pageArray()-->
+                        <!-- /ko -->
+                        <!-- ko foreach: pageArray()-->
                         <!-- ko if:$data == $parent.currentPage() -->
-                    <li class="active page-item"><a class="page-link small"
-                            data-bind="attr: { title:'Current Page ' + $data }, text: $data"></a></li>
+                        <li class="active page-item"><a class="page-link small"
+                                data-bind="attr: { title:'Current Page ' + $data }, text: $data"></a></li>
                         <!-- /ko -->
                         <!-- ko if:$data != $parent.currentPage() -->
-                    <li class="page-item"><a class="page-link small"
-                            data-bind="attr: { href: './countries.html?page=' + $data, title:'Goto Page ' + $data }, text:$data"></a>
-                    </li>
+                        <li class="page-item"><a class="page-link small"
+                                data-bind="attr: { href: './countries.html?page=' + $data, title:'Goto Page ' + $data }, text:$data"></a>
+                        </li>
                         <!-- /ko -->
-                    <!-- /ko -->
-                    <!-- ko if: currentPage() < totalPages() - 4 && totalPages() > 9 -->
-                    <li class="page-item"><a class="page-link small" title="Next Page"
-                            data-bind="attr: { href: './countries.html?page=' + nextPage(), rel:'next' }">→</a></li>
-                    <li class="page-item"><a class="page-link small" title="Last Page"
-                            data-bind="attr: { href: './countries.html?page=' + totalPages() }">⇥</a></li>
-                    <!-- /ko -->
-                </ul>
+                        <!-- /ko -->
+                        <!-- ko if: currentPage() < totalPages() - 4 && totalPages() > 9 -->
+                        <li class="page-item"><a class="page-link small" title="Next Page"
+                                data-bind="attr: { href: './countries.html?page=' + nextPage(), rel:'next' }">→</a></li>
+                        <li class="page-item"><a class="page-link small" title="Last Page"
+                                data-bind="attr: { href: './countries.html?page=' + totalPages() }">⇥</a></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    
+
     <nav class="navbar navbar-light bg-light fixed-bottom">
         <div class="container small">
             <div class="navbar-text">&copy; Introdução as Tecnologias Web - 2022/23</div>
@@ -130,13 +143,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js " integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin=" anonymous "></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js "
+        integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin=" anonymous "></script>
     <script src="./js/countries.js"></script>
     <script>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
 </body>
+
 </html>

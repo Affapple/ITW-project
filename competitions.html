@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -12,11 +13,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="./css/index.css" />
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html" tabindex="Olympics"><img src="../images/Olympic_rings.svg" height="24" /></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="index.html" tabindex="Olympics"><img src="../images/Olympic_rings.svg"
+                    height="24" /></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -32,7 +37,7 @@
                     <li class="nav-item"><a class="nav-link" aria-current="page" href="modalities.html"><i
                                 class="fa fa-soccer-ball-o text-primary"></i> Modalities</a></li>
                     <li class="nav-item"><a class="nav-link" aria-current="page" href="favourites.html"><i
-                        class="fa fa-heart text-danger"></i> Favourites</a></li>
+                                class="fa fa-heart text-danger"></i> Favourites</a></li>
                 </ul>
             </div>
         </div>
@@ -44,164 +49,181 @@
         </div>
         <div class="row small mb-2">
             <div class="col-12 col-md-6 col-lg-9" style="margin-top: 20px;">
-                <div class="d-inline-flex mt-4" id="forms" style="width: 465px ; margin-left: auto; margin-right: auto;">
-                    <input id="searchbar" class="form-control searchBar" type="search" placeholder="Search" aria-label="Search">
-                    <button style="margin-left: 5px;" class="fa fa-search btn btn-outline-danger" id="lupadef" type="submit" onclick="search()"></button>
+                <div class="d-inline-flex mt-4" id="forms"
+                    style="width: 465px ; margin-left: auto; margin-right: auto;">
+                    <input id="searchbar" class="form-control searchBar" type="search" placeholder="Search"
+                        aria-label="Search">
+                    <button style="margin-left: 5px;" class="fa fa-search btn btn-outline-danger" id="lupadef"
+                        type="submit" onclick="search()"></button>
                 </div>
             </div>
-        <!-- ko if:records().length > 0 -->
-        <div class="row small">
-            <p class=" col-4 mr-auto pt-2">
-                <span data-bind="html: 'Page: ' + currentPage() + ' of ' + totalPages()"></span><br />
-                <span data-bind="html: 'Games: '+ fromRecord() + '-' + toRecord() + ' of ' + totalRecords()"></span>
-            </p>
-            <div class="col-8 my-0 pt-3">
-                <ul class="pagination float-end">
-                    <!-- ko if: currentPage() > 5 && totalPages() > 10 -->
-                    <li class="page-item float-end"><a class="page-link" title="First Page" data-bind="attr: { href: './competitions.html?page=' + '1',  rel:'prev'}">⇤</a></li>
-                    <li class="page-item float-end"><a class="page-link" title="Previous Page" data-bind="attr: { href: './competitions.html?page=' + previousPage(),  rel:'prev'}">←</a></li>
-                    <!-- /ko -->
-                    <!-- ko foreach: pageArray()-->
-                    <!-- ko if:$data == $parent.currentPage() -->
-                    <li class="active page-item"><a class="page-link" data-bind="attr: { title:'Current Page ' + $data }, text: $data"></a></li>
-                    <!-- /ko -->
-                    <!-- ko if:$data != $parent.currentPage() -->
-                    <li class="page-item"><a class="page-link" data-bind="attr: { href: './competitions.html?page=' + $data, title:'Goto Page ' + $data }, text:$data"></a></li>
-                    <!-- /ko -->
-                    <!-- /ko -->
-                    <!-- ko if: currentPage() < totalPages() - 4 && totalPages() > 9 -->
-                    <li class="page-item"><a class="page-link" title="Next Page" data-bind="attr: { href: './competitions.html?page=' + nextPage(), rel:'next' }">→</a></li>
-                    <li class="page-item"><a class="page-link" title="Last Page" data-bind="attr: { href: './competitions.html?page=' + totalPages() }">⇥</a></li>
-                    <!-- /ko -->
-                </ul>
-            </div>
-        </div>
-        <!-- /ko -->
 
-<table class="table table-striped table-sm small">
-    <thead class="bg-dark text-light">
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">
-                <select class='countryFilter bg-dark text-light border-0'>
-                    <option value='null' selected='selected'>Modality</option>
-                    <option value='Aeronautics'>Aeronautics</option>
-                    <option value='Alpine Skiing'>Alpine Skiing</option>
-                    <option value='Alpinism'>Alpinism</option>
-                    <option value='Archery'>Archery</option>
-                    <option value='Art Competitions'>Art Competitions</option>
-                    <option value='Athletics'>Athletics</option>
-                    <option value='Badminton'>Badminton</option>
-                    <option value='Baseball'>Baseball</option>
-                    <option value='Basketball'>Basketball</option>
-                    <option value='Basque Pelota'>Basque Pelota</option>
-                    <option value='Beach Volleyball'>Beach Volleyball</option>
-                    <option value='Biathlon'>Biathlon</option>
-                    <option value='Bobsleigh'>Bobsleigh</option>
-                    <option value='Boxing'>Boxing</option>
-                    <option value='Canoeing'>Canoeing</option>
-                    <option value='Cricket'>Cricket</option>
-                    <option value='Croquet'>Croquet</option>
-                    <option value='Cross Country Skiing'>Cross Country Skiing</option>
-                    <option value='Curling'>Curling</option>
-                    <option value='Cycling'>Cycling</option>
-                    <option value='Diving'>Diving</option>
-                    <option value='Equestrianism'>Equestrianism</option>
-                    <option value='Figure Skating'>Figure Skating</option>
-                    <option value='Football'>Football</option>
-                    <option value='Freestyle Skiing'>Freestyle Skiing</option>
-                    <option value='Golf'>Golf</option>
-                    <option value='Gymnastics'>Gymnastics</option>
-                    <option value='Handball'>Handball</option>
-                    <option value='Hockey'>Hockey</option>
-                    <option value='Ice Hockey'>Ice Hockey</option>
-                    <option value='Jeu De Paume'>Jeu De Paume</option>
-                    <option value='Judo'>Judo</option>
-                    <option value='Lacrosse'>Lacrosse</option>
-                    <option value='Luge'>Luge</option>
-                    <option value='Military Ski Patrol'>Military Ski Patrol</option>
-                    <option value='Modern Pentathlon'>Modern Pentathlon</option>
-                    <option value='Motorboating'>Motorboating</option>
-                    <option value='Nordic Combined'>Nordic Combined</option>
-                    <option value='Polo'>Polo</option>
-                    <option value='Racquets'>Racquets</option>
-                    <option value='Rhythmic Gymnastics'>Rhythmic Gymnastics</option>
-                    <option value='Roque'>Roque</option>
-                    <option value='Rowing'>Rowing</option>
-                    <option value='Rugby'>Rugby</option>
-                    <option value='Rugby Sevens'>Rugby Sevens</option>
-                    <option value='Sailing'>Sailing</option>
-                    <option value='Shooting'>Shooting</option>
-                    <option value='Short Track Speed Skating'>Short Track Speed Skating</option>
-                    <option value='Skeleton'>Skeleton</option>
-                    <option value='Ski Jumping'>Ski Jumping</option>
-                    <option value='Snowboarding'>Snowboarding</option>
-                    <option value='Softball'>Softball</option>
-                    <option value='Speed Skating'>Speed Skating</option>
-                    <option value='Swimming'>Swimming</option>
-                    <option value='Synchronized Swimming'>Synchronized Swimming</option>
-                    <option value='Table Tennis'>Table Tennis</option>
-                    <option value='Tennis'>Tennis</option>
-                    <option value='Trampolining'>Trampolining</option>
-                    <option value='Triathlon'>Triathlon</option>
-                    <option value='Tug-Of-War'>Tug-Of-War</option>
-                    <option value='Volleyball'>Volleyball</option>
-                    <option value='Water Polo'>Water Polo</option>
-                    <option value='Weightlifting'>Weightlifting</option>
-                    <option value='Wrestling'>Wrestling</option>
-                </select>
-            </th>
-            <th scope="col" class="text-right"></th>
-        </tr>
-    </thead>
-    <tbody data-bind="foreach: records">
-        <tr>
-            <td class="align-middle" data-bind="text:Id"></td>
-            <td class="align-middle" data-bind="text:Name"></td>
-            <td class="align-middle" data-bind="text:Modality"></td>
-            <td class="text-end">
-                <a class="btn btn-default btn-light btn-xs" data-bind="attr: { href:'./competitionsDetails.html?id=' + Id }">
-                    <i class="fa fa-eye" title="Selecione para ver detalhes"></i>
-                </a>
-                <button class="btn btn-default btn-xs"
-                        data-bind="click:function(data,event) {$parent.updateFavourites(Id)}"
-                        title="Selecione para adicionar aos favoritos">
-                    <i class="fa fa-heart-o" data-bind="attr : { 'id': 'favourite_' + Id,}" ></i>
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                        <img src="../images/Olympic_rings.svg" height="30" /> Loading data...
-                    </h5>
+            <!-- ko if:records().length > 0 -->
+            <div class="row small">
+                <p class=" col-4 mr-auto pt-2">
+                    <span data-bind="html: 'Page: ' + currentPage() + ' of ' + totalPages()"></span><br />
+                    <span data-bind="html: 'Games: '+ fromRecord() + '-' + toRecord() + ' of ' + totalRecords()"></span>
+                </p>
+                <div class="col-8 my-0 pt-3">
+                    <ul class="pagination float-end">
+                        <!-- ko if: currentPage() > 5 && totalPages() > 10 -->
+                        <li class="page-item float-end"><a class="page-link" title="First Page"
+                                data-bind="attr: { href: './competitions.html?page=' + '1',  rel:'prev'}">⇤</a></li>
+                        <li class="page-item float-end"><a class="page-link" title="Previous Page"
+                                data-bind="attr: { href: './competitions.html?page=' + previousPage(),  rel:'prev'}">←</a>
+                        </li>
+                        <!-- /ko -->
+                        <!-- ko foreach: pageArray()-->
+                        <!-- ko if:$data == $parent.currentPage() -->
+                        <li class="active page-item"><a class="page-link"
+                                data-bind="attr: { title:'Current Page ' + $data }, text: $data"></a></li>
+                        <!-- /ko -->
+                        <!-- ko if:$data != $parent.currentPage() -->
+                        <li class="page-item"><a class="page-link"
+                                data-bind="attr: { href: './competitions.html?page=' + $data, title:'Goto Page ' + $data }, text:$data"></a>
+                        </li>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <!-- ko if: currentPage() < totalPages() - 4 && totalPages() > 9 -->
+                        <li class="page-item"><a class="page-link" title="Next Page"
+                                data-bind="attr: { href: './competitions.html?page=' + nextPage(), rel:'next' }">→</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" title="Last Page"
+                                data-bind="attr: { href: './competitions.html?page=' + totalPages() }">⇥</a></li>
+                        <!-- /ko -->
+                    </ul>
                 </div>
-                <div class="modal-body text-center">
-                    <i class="fa fa-spin fa-3x fa-refresh"></i>
+            </div>
+            <!-- /ko -->
+
+            <table class="table table-striped table-sm small">
+                <thead class="bg-dark text-light">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">
+                            <select class='countryFilter bg-dark text-light border-0'>
+                                <option value='null' selected='selected'>Modality</option>
+                                <option value='Aeronautics'>Aeronautics</option>
+                                <option value='Alpine Skiing'>Alpine Skiing</option>
+                                <option value='Alpinism'>Alpinism</option>
+                                <option value='Archery'>Archery</option>
+                                <option value='Art Competitions'>Art Competitions</option>
+                                <option value='Athletics'>Athletics</option>
+                                <option value='Badminton'>Badminton</option>
+                                <option value='Baseball'>Baseball</option>
+                                <option value='Basketball'>Basketball</option>
+                                <option value='Basque Pelota'>Basque Pelota</option>
+                                <option value='Beach Volleyball'>Beach Volleyball</option>
+                                <option value='Biathlon'>Biathlon</option>
+                                <option value='Bobsleigh'>Bobsleigh</option>
+                                <option value='Boxing'>Boxing</option>
+                                <option value='Canoeing'>Canoeing</option>
+                                <option value='Cricket'>Cricket</option>
+                                <option value='Croquet'>Croquet</option>
+                                <option value='Cross Country Skiing'>Cross Country Skiing</option>
+                                <option value='Curling'>Curling</option>
+                                <option value='Cycling'>Cycling</option>
+                                <option value='Diving'>Diving</option>
+                                <option value='Equestrianism'>Equestrianism</option>
+                                <option value='Figure Skating'>Figure Skating</option>
+                                <option value='Football'>Football</option>
+                                <option value='Freestyle Skiing'>Freestyle Skiing</option>
+                                <option value='Golf'>Golf</option>
+                                <option value='Gymnastics'>Gymnastics</option>
+                                <option value='Handball'>Handball</option>
+                                <option value='Hockey'>Hockey</option>
+                                <option value='Ice Hockey'>Ice Hockey</option>
+                                <option value='Jeu De Paume'>Jeu De Paume</option>
+                                <option value='Judo'>Judo</option>
+                                <option value='Lacrosse'>Lacrosse</option>
+                                <option value='Luge'>Luge</option>
+                                <option value='Military Ski Patrol'>Military Ski Patrol</option>
+                                <option value='Modern Pentathlon'>Modern Pentathlon</option>
+                                <option value='Motorboating'>Motorboating</option>
+                                <option value='Nordic Combined'>Nordic Combined</option>
+                                <option value='Polo'>Polo</option>
+                                <option value='Racquets'>Racquets</option>
+                                <option value='Rhythmic Gymnastics'>Rhythmic Gymnastics</option>
+                                <option value='Roque'>Roque</option>
+                                <option value='Rowing'>Rowing</option>
+                                <option value='Rugby'>Rugby</option>
+                                <option value='Rugby Sevens'>Rugby Sevens</option>
+                                <option value='Sailing'>Sailing</option>
+                                <option value='Shooting'>Shooting</option>
+                                <option value='Short Track Speed Skating'>Short Track Speed Skating</option>
+                                <option value='Skeleton'>Skeleton</option>
+                                <option value='Ski Jumping'>Ski Jumping</option>
+                                <option value='Snowboarding'>Snowboarding</option>
+                                <option value='Softball'>Softball</option>
+                                <option value='Speed Skating'>Speed Skating</option>
+                                <option value='Swimming'>Swimming</option>
+                                <option value='Synchronized Swimming'>Synchronized Swimming</option>
+                                <option value='Table Tennis'>Table Tennis</option>
+                                <option value='Tennis'>Tennis</option>
+                                <option value='Trampolining'>Trampolining</option>
+                                <option value='Triathlon'>Triathlon</option>
+                                <option value='Tug-Of-War'>Tug-Of-War</option>
+                                <option value='Volleyball'>Volleyball</option>
+                                <option value='Water Polo'>Water Polo</option>
+                                <option value='Weightlifting'>Weightlifting</option>
+                                <option value='Wrestling'>Wrestling</option>
+                            </select>
+                        </th>
+                        <th scope="col" class="text-right"></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: records">
+                    <tr>
+                        <td class="align-middle" data-bind="text:Id"></td>
+                        <td class="align-middle" data-bind="text:Name"></td>
+                        <td class="align-middle" data-bind="text:Modality"></td>
+                        <td class="text-end">
+                            <a class="btn btn-default btn-light btn-xs"
+                                data-bind="attr: { href:'./competitionsDetails.html?id=' + Id }">
+                                <i class="fa fa-eye" title="Selecione para ver detalhes"></i>
+                            </a>
+                            <button class="btn btn-default btn-xs"
+                                data-bind="click:function(data,event) {$parent.updateFavourites(Id)}"
+                                title="Selecione para adicionar aos favoritos">
+                                <i class="fa fa-heart-o" data-bind="attr : { 'id': 'favourite_' + Id,}"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <img src="../images/Olympic_rings.svg" height="30" /> Loading data...
+                        </h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <i class="fa fa-spin fa-3x fa-refresh"></i>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End of Working Area -->
-    <nav class="navbar navbar-light bg-light fixed-bottom">
-        <div class="container small">
-            <div class="navbar-text">&copy;  Introdução as Tecnologias Web - 2022/23</div>
-            <div class="navbar-nav d-none d-md-block">
-                <div class="nav-item text-end"><a href="https://www.ua.pt" class="nav-link">Universidade de Aveiro</a></div>
+        <!-- End of Working Area -->
+        <nav class="navbar navbar-light bg-light fixed-bottom">
+            <div class="container small">
+                <div class="navbar-text">&copy; Introdução as Tecnologias Web - 2022/23</div>
+                <div class="navbar-nav d-none d-md-block">
+                    <div class="nav-item text-end"><a href="https://www.ua.pt" class="nav-link">Universidade de
+                            Aveiro</a></div>
+                </div>
             </div>
-        </div>
-    </nav>
-    <script src="../Scripts/bootstrap.bundle.min.js"></script>
-    <script src="../Scripts/knockout-3.5.1.js"></script>
-    <script src="../Scripts/jquery-3.6.0.min.js"></script>
-    <script src="../Scripts/jquery-ui-1.13.0.min.js"></script>
-    <script src="./js/competition.js"></script>
+        </nav>
+        <script src="../Scripts/bootstrap.bundle.min.js"></script>
+        <script src="../Scripts/knockout-3.5.1.js"></script>
+        <script src="../Scripts/jquery-3.6.0.min.js"></script>
+        <script src="../Scripts/jquery-ui-1.13.0.min.js"></script>
+        <script src="./js/competition.js"></script>
 </body>
+
 </html>

@@ -60,7 +60,6 @@ function FavouritesViewModel() {
     
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("AJAX Call[" + uri + "] Fail...");
-                hideLoading();
                 self.error(errorThrown);
             },
         })
@@ -140,7 +139,6 @@ function FavouritesViewModel() {
             self.Competitions(self.loadCompetitions());
         }
 
-        hideLoading();
     }
     startLoading();
 };

@@ -10,13 +10,14 @@ var vm = function () {
     self.records = ko.observableArray([]);
     self.currentPage = ko.observable(1);
     self.pagesize = ko.observable(20);
-    self.totalRecords = ko.observable(50);
+    self.totalRecords = ko.observable(51);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
 
     self.edition = ko.computed(function(){
         var edicao = getUrlParameter('edition')
         if (edicao == undefined) {return "0";}
+        $("#games-tab").click()
         return edicao
     },self);
 
@@ -90,6 +91,33 @@ var vm = function () {
         return list;
     };
 
+    self.loadMap = function(data){
+        var map = L.map('map', { zoomSnap: 0.5 }).setView([0.0, 0.0], 1);
+        // Set up the OSM layer
+        L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Data © <a href="http://osm.org/copyright">OpenStreetMap</a>',
+            maxZoom: 18,
+            minZoom: 2,
+        }).addTo(map);
+        var myIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        console.log(data)
+        data.forEach(game => {
+            L.marker([game.Lat, game.Lon], { icon: myIcon })
+            .bindPopup("<a href='./gameDetails?id=" + game.Id + "'>"+game.Name+"</a><br><b>"+ game.CityName + "," + game.CountryName+  "</b>")
+            .addTo(map);
+           
+        });
+    }
+
     //--- Page Events
     self.activate = function (id) {
         console.log(self.edition())
@@ -106,6 +134,10 @@ var vm = function () {
             default:
                 var composedUri = self.baseUri() + "?page=" + id + "&pageSize=" + self.pagesize();
         }
+
+        ajaxHelper(self.baseUri() + "?page=" + 1 + "&pageSize=" + 51, 'GET').done(function(data){
+            self.loadMap(data.Records);
+        })
         ajaxHelper(composedUri, 'GET').done(function (data) {
             console.log(data);
             hideLoading();
@@ -117,6 +149,11 @@ var vm = function () {
             self.totalPages(data.TotalPages);
             self.totalRecords(data.TotalRecords);
             self.loadFavourites();
+
+            $('input[type=radio][name=edition]').change(function(){
+                newURL = '//' + location.host + location.pathname + '?page=1&edition=' + $(this).val();
+                window.location.href = newURL
+            })
         });
     };
 
@@ -127,6 +164,7 @@ var vm = function () {
             type: method,
             url: uri,
             dataType: 'json',
+            async:false,
             contentType: 'application/json',
             data: data ? JSON.stringify(data) : null,
             error: function (jqXHR, textStatus, errorThrown) {
@@ -179,10 +217,7 @@ var vm = function () {
     }
     console.log("VM initialized!");
 
-    $('input[name=edition]').change(function(){
-        newURL = '//' + location.host + location.pathname + '?page=1&edition=' + $(this).val();
-        window.location.href = newURL
-    })
+
 };
 
 $(document).ready(function () {
