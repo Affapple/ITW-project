@@ -64,8 +64,12 @@
         <div class="top border-bottom d-flex justify-content-center align-items-center">
             <h3 class="p-3" data-bind="text:Name"></h3>
             <h3>
-                <!-- ko if: Sex() == "F" -->&#9792;<!-- /ko -->
-                <!-- ko if: Sex() == "M" -->&#9794;<!-- /ko -->
+                <!-- ko if: Sex() == "F" -->
+                <span style="color:palevioletred">&#9792;</span>
+                <!-- /ko -->
+                <!-- ko if: Sex() == "M" -->
+                <span style="color:blue">&#9794;</span>
+                <!-- /ko -->
             </h3>
         </div>
         <div class="row d-fex justify-content-between border-bottom my-3">

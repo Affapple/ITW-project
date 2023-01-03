@@ -129,7 +129,6 @@ function FavouritesViewModel() {
 
 
     function startLoading() {
-        showLoading();
 
         if (self.hasFavourites()) {
             console.log(self.loadModalities())
@@ -146,6 +145,7 @@ function FavouritesViewModel() {
 
 $(document).ready(function () {
     console.log("ready!");
+    showLoading();
     let vm = new FavouritesViewModel()
     ko.applyBindings(vm)
     self.hideLoading();
