@@ -12,7 +12,7 @@ var vm = function () {
     var self = this;
     self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/Countries');
     //self.baseUri = ko.observable('http://localhost:62595/api/drivers');
-    self.displayName = 'Olympic Countries editions List';
+    self.displayName = 'Olympic Games Edition';
     self.error = ko.observable('');
     self.passingMessage = ko.observable('');
     self.records = ko.observableArray([]);
@@ -21,6 +21,40 @@ var vm = function () {
     self.totalRecords = ko.observable(50);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
+    self.favourites = {
+        athletes: [],
+        games: [],
+        modalities : [],
+        competitions : []
+    }; 
+
+    self.loadFavourites = function(){
+        if (localStorage.getItem('favourites') != null){
+            self.favourites = JSON.parse(localStorage.favourites)
+        } else {
+            localStorage.setItem('favourites', JSON.stringify(self.favourites));
+        };
+
+        Favoritos = self.favourites.modalities;
+
+        Favoritos.forEach(id => {
+            $("#favourite_"+id).css('color','red');
+        });
+    }
+
+    self.updateFavourites = function(id){
+        let index = Favoritos.indexOf(String(id))
+        if(index !== -1){
+            $("#favourite_"+id).css('color', '#333')
+            Favoritos.splice(index, 1)
+        } else if(index == -1){
+            $("#favourite_"+id).css('color', 'red')
+            Favoritos.push(String(id))
+        };
+        console.log(Favoritos)
+        console.log(self.favourites);
+        window.localStorage.setItem('favourites', JSON.stringify(self.favourites))
+    }
 
     self.previousPage = ko.computed(function () {
         return self.currentPage() * 1 - 1;

@@ -1,9 +1,18 @@
+// ViewModel KnockOut
+let api_url
+let searchSelected
+const tooltips = document.querySelectorAll('.tt')
+tooltips.forEach(t => {
+    new bootstrap.Tooltip(t)
+});
+
 var vm = function () {
     console.log('ViewModel initiated...');
     //---Variáveis locais
     var self = this;
-    self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/Modalities/');
-    self.displayName = 'Olympic Modalities List';
+    self.baseUri = ko.observable('http://192.168.160.58/Olympics/api/Modalities');
+    //self.baseUri = ko.observable('http://localhost:62595/api/drivers');
+    self.displayName = 'Olympic Games Edition';
     self.error = ko.observable('');
     self.passingMessage = ko.observable('');
     self.records = ko.observableArray([]);
@@ -12,8 +21,6 @@ var vm = function () {
     self.totalRecords = ko.observable(50);
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
-    self.Name = ko.observable("");
-
     self.favourites = {
         athletes: [],
         games: [],
@@ -48,8 +55,6 @@ var vm = function () {
         console.log(self.favourites);
         window.localStorage.setItem('favourites', JSON.stringify(self.favourites))
     }
-
-
 
     self.previousPage = ko.computed(function () {
         return self.currentPage() * 1 - 1;
@@ -98,8 +103,7 @@ var vm = function () {
             self.pagesize(data.PageSize)
             self.totalPages(data.TotalPages);
             self.totalRecords(data.TotalRecords);
-            self.loadFavourites();
-            self.Name(data.Name);
+            //self.SetFavourites();
         });
     };
 
@@ -152,6 +156,64 @@ var vm = function () {
         }
     };
 
+    search = function () {
+        console.log("search");
+        var api = 'http://192.168.160.58/Olympics/api/Modalities/SearchByName?q=' + $("#searchArgs").val();
+        self.countrieslist = [];
+        ajaxHelper(api,'GET').done(function(data){
+            console.log(data);
+            showLoading();
+            self.records(data);
+            $('#pagination').addClass("d-none");
+            $('#line').addClass("d-none");
+            self.totalRecords(data.length);
+            hideLoading();
+            for (var info in data) {
+                self.countrieslist.push(data[info]);
+            }
+        });
+    }
+
+    $("#searchArgs").autocomplete({ 
+        minLength: 2,
+        source: function(request, response) {
+            $.ajax({
+                type: "GET",
+                url : "http://192.168.160.58/Olympics/api/Modalities/SearchByName",
+                data: { 
+                    q: $('#searchArgs').val().toLowerCase()
+                },
+                success: function(data) {
+                    if (!data.length) {
+                        var result = [{
+                            label: 'No results found.',
+                            value: response.term,
+                            source: " "
+                        }];
+                        response(result);
+                    } else {
+                        var nData = $.map(data, function(value, key){
+                            return {
+                                label: value.Name,
+                                value: value.Id,
+                                source: "SearchByName"
+                            }
+                        });
+                        results = $.ui.autocomplete.filter(nData, request.term);
+                        response(results);
+                    }
+                },
+                error: function(){
+                    alert("error");
+                }
+            }) 
+        },
+        select: function(event, ui) {
+           window.location.href = "./modalitiesDetails.html?id=" + ui.item.value;
+        },
+    });
+
+
     //--- start ....
     showLoading();
     var pg = getUrlParameter('page');
@@ -172,3 +234,5 @@ $(document).ready(function () {
 $(document).ajaxComplete(function (event, xhr, options) {
     $("#myModal").modal('hide');
 })
+
+

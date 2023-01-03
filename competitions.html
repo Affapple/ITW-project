@@ -31,17 +31,20 @@
         </div>
     </nav>
     <!-- Working Area -->
-    <div class="container">
+    <div class="container" >
         <div class="border-bottom py-2 mb-2">
-            <h2 data-bind="text:displayName"></h2>
+            <h2>Olympic Competitions list</h2>
         </div>
-        <div class="row small mb-2">
-            <div class="col-12 col-md-6 col-lg-9" style="margin-top: 20px;">
-                <div class="d-inline-flex mt-4" id="forms" style="width: 465px ; margin-left: auto; margin-right: auto;">
-                    <input id="searchbar" class="form-control searchBar" type="search" placeholder="Search" aria-label="Search">
-                    <button style="margin-left: 5px;" class="fa fa-search btn btn-outline-danger" id="lupadef" type="submit" onclick="search()"></button>
-                </div>
-            </div>
+    </div>
+
+    <div class="container" >
+        <div class="col-12 col-md-6 col-lg-9" style="margin-top: 0px;">
+            <div class="d-inline-flex mt-4" id="forms" style="width: 465px ; margin-left: auto; margin-right: auto;">
+                <input id="searchArgs" class="form-control" type="text" placeholder="Search" aria-label="Search" name="searchbar" style="margin-top: 0px; margin-left: 0px;">
+                <button style="margin-left: 5px;" class="fa fa-search btn btn-outline-success" id="searchBar1" type="submit" onclick="search()"></button>
+            </div> 
+        </div>
+        <div >
         <!-- ko if:records().length > 0 -->
         <div class="row small">
             <p class=" col-4 mr-auto pt-2">
@@ -191,10 +194,16 @@
             </div>
         </div>
     </nav>
-    <script src="../Scripts/bootstrap.bundle.min.js"></script>
-    <script src="../Scripts/knockout-3.5.1.js"></script>
-    <script src="../Scripts/jquery-3.6.0.min.js"></script>
-    <script src="../Scripts/jquery-ui-1.13.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js " integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin=" anonymous "></script>
     <script src="./js/competition.js"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>    
 </body>
 </html>
