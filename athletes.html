@@ -51,23 +51,10 @@
                 <div class="col-3">
                     <h3>Athletes List</h3>
                 </div>
-                <!-- <div class="col-3">
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                            Filtrar por
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a onclick="self.sortBy('id')">Id</a></li>
-                            <li><a onclick="self.sortBy('nameUp')">Nome (Crescente)</a></li>
-                            <li><a onclick="self.sortBy('nameDown')">Nome (Decrescente)</a></li>
-                            <li><a onclick="self.sortBy('heightUp')">Altura (Crescente)</a></li>
-                            <li><a onclick="self.sortBy('heightDown')">Altura (Decrescente)</a></li>
-                            <li><a onclick="self.sortBy('id')">Sexo (Crescente)</a></li>
-                            <li><a onclick="self.sortBy('id')">Sexo (Decrescente)</a></li>
-                        </ul>
-                    </div>
-                </div> -->
+                <div class="col-3">
+
+
+                </div>
                 <div class="col-12 col-md-6 ">
                     <div class="input-group form-group ">
                         <input type="search" placeholder="Search" aria-label="Search Athlete" id="searchArgs"
@@ -80,20 +67,42 @@
             </div>
         </div>
         <!-- Paginaçao -->
-        <div class="row">
-            <p class="col-md-4 my-0 mr-auto pt-2 small">
-                <span data-bind="html: 'Page: ' + currentPage() + ' de ' + totalPages()" class="small"></span><br />
-                <span data-bind="html: 'Entradas: '+ fromRecord() + '-' + toRecord() + ' de ' + totalRecords()"
-                    class="small"></span>
-            </p>
-            <div class="col-md-8 my-0 pt-3 sm">
-                <ul class="pagination d-flex justify-content-center justify-content-md-end">
+        <div class="row d-flex justify-content-between">
+            <div class="col-lg-4 my-0 mr-auto pt-2 small d-flex justify-content-between">
+                <p class="col-4">
+                    <span data-bind="html: 'Page: ' + currentPage() + ' de ' + totalPages()" class="small"></span><br />
+                    <span data-bind="html: 'Entradas: '+ fromRecord() + '-' + toRecord() + ' de ' + totalRecords()"
+                        class="small"></span>
+                </p>
+                <div class="dropdown col-auto align-self-center">
+                    <button type="button" class="btn btn-primary dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filter
+                    </button>
+                    <a href="./athletes.html" id="clearFilters" class="btn btn-sm d-none" style="color:red">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdown">
+                        <li><a role="button" class="dropdown-item" val="Id">Id</a></li>
+                        <li><a role="button" class="dropdown-item" val="NameUp">Name ↑</a></li>
+                        <li><a role="button" class="dropdown-item" val="NameDn">Name ↓</a></li>
+                        <li><a role="button" class="dropdown-item" val="HeightUp">Height ↑</a></li>
+                        <li><a role="button" class="dropdown-item" val="HeightDn">Height ↓</a></li>
+                        <li><a role="button" class="dropdown-item" val="SexUn">Sex (Female First)</a></li>
+                        <li><a role="button" class="dropdown-item" val="SexDn">Sex (Male First)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-auto my-0 pt-3 d-flex justify-content-center justify-content-lg-end flex-wrap">
+                <ul class="pagination d-flex justify-content-center justify-content-lg-end">
                     <!-- ko if: currentPage() > 5 && totalPages() > 10 -->
-                    <li class="page-item float-end"><a class="page-link small" title="First Page"
-                            data-bind="attr: { href: './athletes.html?page=' + '1' + '&search='+ searchParams(),  rel:'prev'}">⇤</a>
+                    <li class="page-item float-end"><a class="page-link small" title="First Page" rel="prev"
+                            goto="1">⇤</a>
                     </li>
                     <li class="page-item float-end"><a class="page-link small" title="Previous Page"
-                            data-bind="attr: { href: './athletes.html?page=' + previousPage()+ '&search='+ searchParams(),  rel:'prev'}">←</a>
+                            data-bind="attr: { 'goto': previousPage(), rel:'prev'}">←</a>
                     </li>
 
                     <!-- /ko -->
@@ -104,17 +113,17 @@
                     <!-- /ko -->
                     <!-- ko if:$data != $parent.currentPage() -->
                     <li class="page-item"><a class="page-link small"
-                            data-bind="attr: { href: './athletes.html?page=' + $data + '&search='+ $parent.searchParams(), title:'Goto Page ' + $data }, text:$data"></a>
+                            data-bind="attr: { 'goto': $data, title:'Goto Page ' + $data }, text:$data"></a>
                     </li>
                     <!-- /ko -->
                     <!-- /ko -->
 
                     <!-- ko if: currentPage() < totalPages() - 4 && totalPages() > 9 -->
                     <li class="page-item"><a class="page-link small" title="Next Page"
-                            data-bind="attr: { href: './athletes.html?page=' + nextPage() + '&search='+ searchParams(), rel:'next' }">→</a>
+                            data-bind="attr: { 'goto': nextPage(), rel:'next' }">→</a>
                     </li>
                     <li class="page-item"><a class="page-link small" title="Last Page"
-                            data-bind="attr: { href: './athletes.html?page=' + totalPages() + '&search='+ searchParams() }">⇥</a>
+                            data-bind="attr: { 'goto': totalPages()}">⇥</a>
                     </li>
                     <!-- /ko -->
                 </ul>
@@ -226,9 +235,12 @@
     </nav>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+
     <script src="./js/athletes.js"></script>
 </body>
 
