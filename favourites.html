@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITW - Titulo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
+    <link href="./css/index.css" rel="stylesheet" />
+    <style>
+        .fa-heart-o{
+            color:red;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style="margin-bottom:60px">
+        <div class="container">
+            <a class="navbar-brand" href="index.html" tabindex="Olympics"><img src="../images/Olympic_rings.svg"
+                    height="24" /></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" aria-current="page" href="athletes.html"><i
+                                class="fa fa-user-o text-warning"></i> Athletes</a></li>
+                    <li class="nav-item"><a class="nav-link" aria-current="page" href="competitions.html"><i
+                                class="fa fa-trophy"></i> Competitions</a></li>
+                    <li class="nav-item"><a class="nav-link" aria-current="page" href="countries.html"><i
+                                class=" fa fa-flag-o text-danger"></i> Countries</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="games.html"><i
+                                class="fa fa-map-marker text-success"></i> Games</a></li>
+                    <li class="nav-item"><a class="nav-link" aria-current="page" href="modalities.html"><i
+                                class="fa fa-soccer-ball-o text-primary"></i> Modalities</a></li>
+                    <li class="nav-item"><a class="nav-link" aria-current="page" href="favourites.html"><i
+                        class="fa fa-heart text-danger"></i> Favourites</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Trabalhar Aqui  -->
+    <!-- ko if: hasFavourites() -->
+    <div class="container" style="margin-top:60px; margin-bottom:60px">
+
+        <!-- ATletas -->
+        <div class="row">
+            <table class="table table-striped table-sm small">
+                <thead>
+                    <tr>
+                        <th colspan="4" class="text-center table-danger"><b>Favourite Athletes</b></th>
+                    </tr>
+                    <tr >
+                        <th colspan="1">Id</th>
+                        <th colspan="2">Name</th>
+                        <th colspan="1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ko foreach: Athletes() -->
+                    <tr>
+                        <td colspan="1" data-bind="text: $data.Id" class="small"></td>
+                        <td colspan="2" data-bind="text: $data.Name"></td>
+                        <td colspan="1">
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-default btn-xs mx-1"
+                                    data-bind="attr: {href: './athletesDetails.html?id=' + Id, 'aria-label' : 'Ver detalhes completos de ' + Name[0] + ' ' + Name[Name.length]}"
+                                    title="Ver detalhes">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a class="btn btn-default btn-xs" data-bind="attr: {'aria-label' : 'Adicionar ' +
+                                                            Name.split(' ')[0]+ ' ' +
+                                                            Name.split(' ')[Name.split(' ').length-1]
+                                                             + ' Aos favoritos',
+                                                          'id': 'favourite_Athletes_' + Id },
+                                                        click:function(data,event) {$parent.updateFavourites(Id, 'Athletes')}"
+                                    title="Adicionar aos favoritos">
+                                    <i class="fa fa-heart-o"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                </tbody>
+            </table>
+        </div> 
+
+        <!-- Games -->
+        <div class="row">
+            <table class="table table-striped table-sm small">
+                <thead>
+                    <tr>
+                        <th colspan="4" class="text-center table-danger"><b>Favourite Games</b></th>
+                    </tr>
+                    <tr >
+                        <th colspan="1">Id</th>
+                        <th colspan="2">Games</th>
+                        <th colspan="1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ko foreach: Games() -->
+                    <tr>
+                        <td colspan="1" data-bind="text: Id" class="small"></td>
+                        <td colspan="2" data-bind="text: Name"></td>
+                        <td colspan="1">
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-default btn-xs mx-1"
+                                    data-bind="attr: { href:'./gameDetails.html?id=' + Id }"
+                                    title="Ver detalhes">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a class="btn btn-default btn-xs"
+                                    data-bind="click:function(data,event) {$parent.updateFavourites(Id, 'Games')}"
+                                    title="Selecione para adicionar aos favoritos">
+                                    <i class="fa fa-heart-o" data-bind="attr:{'id':'favourite_Games_'+Id}"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modalidades -->
+        <div class="row">
+            <table class="table table-striped table-sm small">
+                <thead>
+                    <tr>
+                        <th colspan="4" class="text-center table-danger"><b>Favourite Modalities</b></th>
+                    </tr>
+                    <tr >
+                        <th colspan="1">Id</th>
+                        <th colspan="2">Modality</th>
+                        <th colspan="1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ko foreach: Modalities() -->
+                    <tr>
+                        <td colspan="1" data-bind="text: Id" class="small"></td>
+                        <td colspan="2" data-bind="text: Name"></td>
+                        <td colspan="1">
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-default btn-xs mx-1"
+                                    data-bind="attr: { href:'./modalitiesDetails.html?id=' + Id }"
+                                    title="Ver detalhes">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a class="btn btn-default btn-xs"
+                                    data-bind="click:function(data,event) {$parent.updateFavourites(Id, 'Modalities')}"
+                                    title="Selecione para adicionar aos favoritos">
+                                    <i class="fa fa-heart-o" data-bind="attr:{'id':'favourite_Modalities_'+Id}"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Competitions -->
+        <div class="row">
+            <table class="table table-striped table-sm small">
+                <thead>
+                    <tr>
+                        <th colspan="4" class="text-center table-danger"><b>Favourite Competitions</b></th>
+                    </tr>
+                    <tr >
+                        <th colspan="1">Id</th>
+                        <th colspan="2">Competition</th>
+                        <th colspan="1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ko foreach: Competitions() -->
+                    <tr>
+                        <td colspan="1" data-bind="text: Id" class="small"></td>
+                        <td colspan="2" data-bind="text: Name"></td>
+                        <td colspan="1">
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-default btn-xs mx-1"
+                                    data-bind="attr: { href:'./competitionsDetails.html?id=' + Id }"
+                                    title="Ver detalhes">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a class="btn btn-default btn-xs"
+                                    data-bind="click:function(data,event) {$parent.updateFavourites(Id, 'Competitions')}"
+                                    title="Selecione para adicionar aos favoritos">
+                                    <i class="fa fa-heart-o" data-bind="attr:{'id':'favourite_Competitions_'+Id}"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko ifnot: hasFavourites() -->
+    <h1 class="text-center align-center" style="font-size: calc(1rem * 5)"><b>You haven't got any favourites yet :)</b></h1>
+    <!-- /ko -->
+
+    <!-- Fim de Area de Trabalho -->
+    <nav class="navbar navbar-light bg-light fixed-bottom">
+        <div class="container small">
+            <div class="navbar-text">&copy; Introdução as Tecnologias Web - 2022/23</div>
+            <div class="navbar-nav">
+                <div class="nav-item text-end d-none d-md-block"><a href="https://www.ua.pt"
+                        class="nav-link">Universidade de Aveiro</a></div>
+            </div>
+        </div>
+    </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="js/favourites.js"></script>
+</body>
+
+</html>

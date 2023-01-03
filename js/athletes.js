@@ -1,15 +1,9 @@
-//TODO Mudar esta merda toda para aparecer fullDetails (shit emplementation)
-
 let vm = function athletesTableViewModel() {
     let self = this;
 
     self.baseUri = ko.observable('http://192.168.160.58/Olympics/api');
-    self.Name = ko.observable("Name")
-    self.Sex = ko.observable("Sex")
+
     self.records = ko.observableArray([]); 
-    self.Weight = ko.observable("Weight");
-    self.Height = ko.observable("Height");
-    self.Photo = ko.observable('')
 
     self.error = ko.observable('');
     self.currentPage = ko.observable(1);
@@ -20,10 +14,10 @@ let vm = function athletesTableViewModel() {
     self.hasNext = ko.observable(false);
     self.searchParams= ko.observable("");
     self.favourites = {
-        athletes: [],
-        games: [],
-        modalities : [],
-        competitions : []
+        Athletes: [],
+        Games: [],
+        Modalities : [],
+        Competitions : []
     }; 
 
     self.loadFavourites = function(){
@@ -33,7 +27,7 @@ let vm = function athletesTableViewModel() {
             localStorage.setItem('favourites', JSON.stringify(self.favourites));
         };
 
-        Favoritos = self.favourites.athletes;
+        Favoritos = self.favourites.Athletes;
 
         Favoritos.forEach(id => {
             $("#favourite_"+id).css('color','red');
