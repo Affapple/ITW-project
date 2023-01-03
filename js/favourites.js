@@ -60,7 +60,6 @@ function FavouritesViewModel() {
     
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("AJAX Call[" + uri + "] Fail...");
-                hideLoading();
                 self.error(errorThrown);
             },
         })
@@ -130,7 +129,6 @@ function FavouritesViewModel() {
 
 
     function startLoading() {
-        showLoading();
 
         if (self.hasFavourites()) {
             console.log(self.loadModalities())
@@ -140,7 +138,6 @@ function FavouritesViewModel() {
             self.Competitions(self.loadCompetitions());
         }
 
-        hideLoading();
     }
     startLoading();
 };
@@ -148,6 +145,7 @@ function FavouritesViewModel() {
 
 $(document).ready(function () {
     console.log("ready!");
+    showLoading();
     let vm = new FavouritesViewModel()
     ko.applyBindings(vm)
     self.hideLoading();

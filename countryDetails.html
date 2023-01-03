@@ -12,6 +12,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="./css/athletes.css" rel="stylesheet" />
 </head>
+
 <body>
     <div>
         <nav class=" navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -19,8 +20,8 @@
                 <a class="navbar-brand" href="index.html" tabindex="Olympics"><img src="images\Olympic_rings.svg"
                         height="24" alt="Jogos Olimpicos" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -36,7 +37,7 @@
                         <li class="nav-item"><a class="nav-link" aria-current="page" href="modalities.html"><i
                                     class="fa fa-soccer-ball-o text-primary"></i> Modalities</a></li>
                         <li class="nav-item"><a class="nav-link" aria-current="page" href="favourites.html"><i
-                            class="fa fa-heart text-danger"></i> Favourites</a></li>
+                                    class="fa fa-heart text-danger"></i> Favourites</a></li>
                     </ul>
                 </div>
             </div>
@@ -67,71 +68,61 @@
                         <h6 style="margin-left: 20px" data-bind="text: Ioc"></h6>
                     </td>
                 </tr>
-                
-            <tr>
-                <td>
-                    <h2>Events [<span data-bind="text: Events().length"></span>]:</h2>
-                </td>
-            </tr>
+
+                <tr>
+                    <td>
+                        <h2>Events [<span data-bind="text: Events().length"></span>]:</h2>
+                    </td>
+                </tr>
             </table>
             <table>
-            <tr>
-                <td
-                style="margin-left: 20px"
-                colspan="2"
-                class="small col-lg-12"
-                data-bind="foreach: Events"
-                >
-                <div class="border rounded d-inline-block mr-2 mb-1 p-1">
-                    <i class="fa fa-dot-circle-o"></i>
-                    <a
-                    class="text-muted text-decoration-none"
-                    data-bind=" attr: {href: './competitionsDetails.html?id=' + Id } "
-                    ><span data-bind="text: Name" ></span> (<span data-bind="text: Modality"></span>)</a>
-                </div>
-            </td>
-            </tr>
-            <tr>
-                <td>
-                    <h2>Participant [<span data-bind="text: Participant().length"></span>]:</h2>
-                </td>
-            </tr>
+                <tr>
+                    <td style="margin-left: 20px" colspan="2" class="small col-lg-12" data-bind="foreach: Events">
+                        <div class="border rounded d-inline-block mr-2 mb-1 p-1">
+                            <i class="fa fa-dot-circle-o"></i>
+                            <a class="text-muted text-decoration-none"
+                                data-bind=" attr: {href: './competitionsDetails.html?id=' + Id } "><span
+                                    data-bind="text: Name"></span> (<span data-bind="text: Modality"></span>)</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2>Participant [<span data-bind="text: Participant().length"></span>]:</h2>
+                    </td>
+                </tr>
             </table>
             <table>
-            <tr>
-                <td
-                style="margin-left: 20px"
-                colspan="2"
-                class="small col-lg-12"
-                data-bind="foreach: Participant"
-                >
-                <div class="border rounded d-inline-block mr-2 mb-1 p-1">
-                    <img style="height:2rem" data-bind="attr: {src:Logo}"></img>
-                    <a  class="text-muted text-decoration-none" data-bind="attr: { href: './GameDetails.html?id=' + Id }">
-                        <span data-bind="text: Name" ></span> (<span data-bind="text: CountryName"></span>)
-                    </a>
-            </div>
-            </td>
-            </tr>
+                <tr>
+                    <td style="margin-left: 20px" colspan="2" class="small col-lg-12" data-bind="foreach: Participant">
+                        <div class="border rounded d-inline-block mr-2 mb-1 p-1">
+                            <img style="height:2rem" data-bind="attr: {src:Logo}"></img>
+                            <a class="text-muted text-decoration-none"
+                                data-bind="attr: { href: './GameDetails.html?id=' + Id }">
+                                <span data-bind="text: Name"></span> (<span data-bind="text: CountryName"></span>)
+                            </a>
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
         <!-- /ko -->
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-dark text-light">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                            <img src="../Imagens/Imagem header/logovermelho.png" height="30" /> Loading data...
-                        </h5>
-                    </div>
-                    <div class="modal-body text-center">
-                        <i class="fa fa-spin fa-3x fa-refresh"></i>
-                    </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-light">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <img src="../Imagens/Imagem header/logovermelho.png" height="30" /> Loading data...
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fa fa-spin fa-3x fa-refresh"></i>
                 </div>
             </div>
-        </div>    
+        </div>
+    </div>
 
 
 
@@ -153,5 +144,5 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="./js/countryDetails.js"></script>
 </body>
+
 </html>
-  
