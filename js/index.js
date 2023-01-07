@@ -2,16 +2,11 @@
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl)
             })
-// ViewModel KnockOut
-var vm = function () {
-    console.log('ViewModel initiated...');
-    //---Variáveis locais
     var self = this;
     self.baseUri = ko.observable('http://192.168.160.58/Olympics/');
 
     self.error = ko.observable('');
 
-    //--- Internal functions
 
 
     $("#searchAll").autocomplete({ 
@@ -50,19 +45,8 @@ var vm = function () {
             }) 
         },
         select: function(event, ui) {
-           window.location.href = "./" + ui.item.table.toLowerCase() + "Details.html?id" + ui.item.value
+           window.location.href = "./" + ui.item.table.toLowerCase() + "Details.html?id=" + ui.item.value
         },
     });
-
-};
-
-$(document).ready(function () {
-    console.log("ready!");
-    ko.applyBindings(new vm());
-});
-
-$(document).ajaxComplete(function (event, xhr, options) {
-    $("#myModal").modal('hide');
-})
 
 

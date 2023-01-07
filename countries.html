@@ -17,16 +17,25 @@
             box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             transition: box-shadow 0.25s;
         }
+
         .ui-autocomplete {
-		max-height: 300px;
-		overflow-y: auto;
-		overflow-x: hidden;
-        background-color: rgb(242,242,242);
-        color:black;
-	    }
-	    * html .ui-autocomplete {
-		height: 400px;
-	    }
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: rgb(242, 242, 242);
+            color: black;
+        }
+
+        .ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+            background-color: #ececec !important;
+            border: #ececec !important;
+            color: black !important;
+
+        }
+
+        * html .ui-autocomplete {
+            height: 400px;
+        }
     </style>
 </head>
 
@@ -37,8 +46,8 @@
                 <a class="navbar-brand" href="index.html" tabindex="Olympics"><img src="/images/Olympic_rings.svg"
                         height="24" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -55,6 +64,8 @@
                                     class="fa fa-soccer-ball-o text-primary"></i> Modalities</a></li>
                         <li class="nav-item "><a class="nav-link" aria-current="page" href="favourites.html"><i
                                     class="fa fa-heart text-danger"></i> Favourites</a></li>
+                        <li class="nav-item "><a class="nav-link" aria-current="page" href="statistics.html"><i
+                                    class="fa fa-bar-chart text-success"></i> Statistics</a></li>
                         <li class="nav-item ms-lg-auto col-8 col-lg-5">
                             <input id="searchAll" class="form-control searchBar" type="search" placeholder="Search All"
                                 aria-label="Search">
@@ -174,6 +185,7 @@
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js "
             integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin=" anonymous "></script>
         <script src="./js/countries.js"></script>
+        <script src="./js/index.js"></script>
         <script>
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

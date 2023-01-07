@@ -17,7 +17,9 @@ var vm = function () {
     self.edition = ko.computed(function(){
         var edicao = getUrlParameter('edition')
         if (edicao == undefined) {return "0";}
-        $("#games-tab").click()
+        if (String(window.location.href).includes("?")){
+            $("#games-tab").click()
+        }
         return edicao
     },self);
 
@@ -112,7 +114,7 @@ var vm = function () {
         console.log(data)
         data.forEach(game => {
             L.marker([game.Lat, game.Lon], { icon: myIcon })
-            .bindPopup("<a href='./gameDetails?id=" + game.Id + "'>"+game.Name+"</a><br><b>"+ game.CityName + "," + game.CountryName+  "</b>")
+            .bindPopup("<a class='text-decoration-none' href='" + "/gameDetails.html?id=" + game.Id + "'>"+game.Name+"</a><br><b>"+ game.CityName + "," + game.CountryName+  "</b>")
             .addTo(map);
            
         });
@@ -120,20 +122,23 @@ var vm = function () {
 
     //--- Page Events
     self.activate = function (id) {
-        console.log(self.edition())
-
-        $('input[name=edition]').val([self.edition()]);
         console.log('CALL: getGames...');
         switch (self.edition()){
             case '1':
                 var composedUri = self.baseUri() + "?season=" + self.edition() + "&page=" + id + "&pageSize=" + self.pagesize();
+                $("#filter").text("Summer")
+                $("#clearFilters").removeClass("d-none")
                 break;
             case '2':
                 var composedUri = self.baseUri() + "?season=" + self.edition() + "&page=" + id + "&pageSize=" + self.pagesize();
+                 $("#filter").text("Winter")
+                 $("#clearFilters").removeClass("d-none")
                 break;
             default:
                 var composedUri = self.baseUri() + "?page=" + id + "&pageSize=" + self.pagesize();
         }
+        
+        
 
         ajaxHelper(self.baseUri() + "?page=" + 1 + "&pageSize=" + 51, 'GET').done(function(data){
             self.loadMap(data.Records);
@@ -149,14 +154,54 @@ var vm = function () {
             self.totalPages(data.TotalPages);
             self.totalRecords(data.TotalRecords);
             self.loadFavourites();
-
-            $('input[type=radio][name=edition]').change(function(){
-                newURL = '//' + location.host + location.pathname + '?page=1&edition=' + $(this).val();
-                window.location.href = newURL
-            })
         });
     };
 
+    $("#searchArgs").autocomplete({ 
+        minLength: 1,
+        source: function(request, response) {
+            $.ajax({
+                type: "GET",
+                url : "http://192.168.160.58/Olympics/api/Games/SearchByName",
+                data: { 
+                    q: $('#searchArgs').val().toLowerCase()
+                },
+                success: function(data) {
+                    if (!data.length) {
+                        var result = [{
+                            label: 'No results found.',
+                            value: response.term,
+                            source: " "
+                        }];
+                        response(result);
+                    } else {
+                        var nData = $.map(data, function(value, key){
+                            return {
+                                label: value.Name,
+                                value: value.Id,
+                                source: "SearchByName"
+                            }
+                        });
+                        results = $.ui.autocomplete.filter(nData, request.term);
+                        response(results);
+                    }
+                },
+                error: function(){
+                    alert("error");
+                }
+            }) 
+        },
+        select: function(event, ui) {
+           window.location.href = "./AthletesDetails.html?id=" + ui.item.value;
+        },
+    });
+    
+
+    $("a[role='button']").click(function(){
+        filter = $(this).attr('val')
+        newURL = '//' + location.host + location.pathname + '?page=1&edition=' + filter
+        window.location.href = newURL
+    })
     //--- Internal functions
     function ajaxHelper(uri, method, data) {
         self.error(''); // Clear error message

@@ -101,15 +101,53 @@ var vm = function() {
         }
     };
 
+ 
+
     //--- start ....
     showLoading();
-    var pg = getUrlParameter('id');
-    console.log(pg);
-    if (pg == undefined)
+    var id = getUrlParameter('id');
+    console.log(id);
+    if (id == undefined)
         self.activate(1);
     else {
-        self.activate(pg);
+        self.activate(id);
     }
+
+       //Get data for Graph
+       composedUri = "http://192.168.160.58/Olympics/api/Statistics/Medals_Games?id=" + id
+       ajaxHelper(composedUri, 'GET').done(function (data) {
+           self.graphData = data
+           let array = [["Game Name", "Gold", "Silver", "Bronze"],]
+           data.forEach(game => {
+               var gold = game.Medals[0].Counter;
+               var silver = game.Medals[1].Counter;
+               var bronze = game.Medals[2].Counter;
+               array.push([game.GameName, gold, silver, bronze]);
+           })
+           google.charts.load('current', {
+               'packages': ['corechart']
+           });
+   
+           google.charts.setOnLoadCallback(drawChart);
+   
+           function drawChart() {
+               console.log(array)
+               var dados = google.visualization.arrayToDataTable(array);
+   
+               var options = {
+                   title: "Medals Won by" + self.Name(),
+                   bar: {groupWidth: "95%"},
+                   width: "100%",
+                   height: 400,
+                   colors : ['gold','silver', '#b87333'],
+                   isStacked: true,
+               };
+   
+               var chart = new google.visualization.BarChart(document.getElementById('medals_div'));
+   
+               chart.draw(dados, options);
+           }
+       });
 };
 
 $(document).ready(function() {

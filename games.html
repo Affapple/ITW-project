@@ -12,10 +12,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-     integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-     crossorigin="">
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin="">
+    <link rel="stylesheet" href="./css/jquery-ui/jquery-ui.css">
+
     <link rel="stylesheet" href="./css/index.css" />
     <link rel="stylesheet" href="./css/games.css" />
+    <style>
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: rgb(242, 242, 242);
+            color: black;
+        }
+
+        .ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+            background-color: #ececec !important;
+            border: #ececec !important;
+            color: black !important;
+
+        }
+
+        * html .ui-autocomplete {
+            height: 400px;
+        }
+    </style>
 </head>
 
 <body>
@@ -42,6 +64,8 @@
                                 class="fa fa-soccer-ball-o text-primary"></i> Modalities</a></li>
                     <li class="nav-item "><a class="nav-link" aria-current="page" href="favourites.html"><i
                                 class="fa fa-heart text-danger"></i> Favourites</a></li>
+                    <li class="nav-item "><a class="nav-link" aria-current="page" href="statistics.html"><i
+                                class="fa fa-bar-chart text-success"></i> Statistics</a></li>
                     <li class="nav-item ms-lg-auto col-8 col-lg-5">
                         <input id="searchAll" class="form-control searchBar" type="search" placeholder="Search All"
                             aria-label="Search">
@@ -65,8 +89,8 @@
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="games-tab" data-bs-toggle="tab" data-bs-target="#gamesTable"
-                    type="button" role="tab" aria-controls="profile" aria-selected="false">
+                <button class="nav-link" id="games-tab" data-bs-toggle="tab" data-bs-target="#gamesTable" type="button"
+                    role="tab" aria-controls="profile" aria-selected="false">
                     All Games
                 </button>
             </li>
@@ -87,17 +111,6 @@
                         <span
                             data-bind="html: 'Games: '+ fromRecord() + '-' + toRecord() + ' of ' + totalRecords()"></span>
                     </p>
-                    <div class="col-7 d-flex flex-wrap gap-1">
-                        <input type="radio" class="btn-check" name="edition" id="0" value="0" autocomplete="off"
-                            checked>
-                        <label class="btn btn-secondary align-self-center py-2" for="0">All</label>
-
-                        <input type="radio" class="btn-check" name="edition" id="1" value="1" autocomplete="off">
-                        <label class="btn btn-secondary align-self-center py-2" for="1">Summer</label>
-
-                        <input type="radio" class="btn-check" name="edition" id="2" value="2" autocomplete="off">
-                        <label class="btn btn-secondary align-self-center py-2" for="2">Winter</label>
-                    </div>
 
                     <div class="col-2 my-0 pt-3">
                         <ul class="pagination float-end">
@@ -133,7 +146,33 @@
                 </div>
                 <!-- /ko -->
 
-                <table class="table table-striped table-sm small">
+                <div class="row mb-2 float-end">
+                    <div class="col-auto">
+                        <div class="input-group form-group ">
+                            <input type="search" placeholder="Search" aria-label="Search Edition" id="searchArgs"
+                                class="form-control form-control-sm" onsearch="$('#search').click()" />
+                            <button type="button" id="search" class="btn btn-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="dropdown col-auto align-self-center">
+                        <button type="button" class="btn btn-primary dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filter">
+                            Filter by Season
+                        </button>
+                        <a href="./games.html?" id="clearFilters" class="btn btn-sm d-none" style="color:red">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown">
+                            <li><a role="button" class="dropdown-item" val="0">All</a></li>
+                            <li><a role="button" class="dropdown-item" val="1">Summer</a></li>
+                            <li><a role="button" class="dropdown-item" val="2">Winter</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <table class="table table-striped table-sm small table-hover">
                     <thead class="bg-dark text-light">
                         <tr>
                             <th scope="col">Id</th>
@@ -166,6 +205,7 @@
                     </tbody>
                 </table>
             </div>
+
             <!-- Modal -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                 aria-hidden="true">
@@ -184,6 +224,7 @@
             </div>
         </div>
     </div>
+
     <!-- End of Working Area -->
     <nav class="navbar navbar-light bg-light fixed-bottom">
         <div class="container small">
@@ -194,10 +235,17 @@
             </div>
         </div>
     </nav>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.js" integrity="sha512-Dqm3h1Y4qiHUjbhxTuBGQsza0Tfppn53SHlu/uj1f+RT+xfShfe7r6czRf5r2NmllO2aKx+tYJgoxboOkn1Scg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.js"
+        integrity="sha512-Dqm3h1Y4qiHUjbhxTuBGQsza0Tfppn53SHlu/uj1f+RT+xfShfe7r6czRf5r2NmllO2aKx+tYJgoxboOkn1Scg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js "
+        integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin=" anonymous "></script>
+    <script src="./js/index.js"></script>
     <script src="./js/games.js"></script>
 </body>
 
