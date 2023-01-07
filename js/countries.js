@@ -209,7 +209,7 @@ var vm = function () {
             }) 
         },
         select: function(event, ui) {
-           window.location.href = "./CountryDetails.html?id=" + ui.item.value;
+           window.location.href = "./countriesDetails.html?id=" + ui.item.value;
         },
     });
 

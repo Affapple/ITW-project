@@ -1,3 +1,10 @@
+let api_url
+let searchSelected
+const tooltips = document.querySelectorAll('.tt')
+tooltips.forEach(t => {
+    new bootstrap.Tooltip(t)
+});
+
 let vm = function athletesTableViewModel() {
     let self = this;
 
@@ -164,6 +171,45 @@ let vm = function athletesTableViewModel() {
         newURL = '//' + location.host + location.pathname + '?page=1&filter=' + filter
         window.location.href = newURL
     })
+
+    $("#searchArgs").autocomplete({ 
+        minLength: 4,
+        source: function(request, response) {
+            $.ajax({
+                type: "GET",
+                url : "http://192.168.160.58/Olympics/api/Athletes/SearchByName?id=",
+                data: { 
+                    q: $('#searchArgs').val().toLowerCase()
+                },
+                success: function(data) {
+                    if (!data.length) {
+                        var result = [{
+                            label: 'No results found.',
+                            value: response.term,
+                            source: " "
+                        }];
+                        response(result);
+                    } else {
+                        var nData = $.map(data, function(value, key){
+                            return {
+                                label: value.Name,
+                                value: value.Id,
+                                source: "SearchByName"
+                            }
+                        });
+                        results = $.ui.autocomplete.filter(nData, request.term);
+                        response(results);
+                    }
+                },
+                error: function(){
+                    alert("error");
+                }
+            }) 
+        },
+        select: function(event, ui) {
+           window.location.href = "./AthletesDetails.html?id=" + ui.item.value;
+        },
+    });
     
     // inicializar pedido
     let pg = getUrlParameter('page');

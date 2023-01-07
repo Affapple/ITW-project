@@ -1,4 +1,8 @@
-﻿// ViewModel KnockOut
+﻿var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+// ViewModel KnockOut
 var vm = function () {
     console.log('ViewModel initiated...');
     //---Variáveis locais
@@ -8,58 +12,46 @@ var vm = function () {
     self.error = ko.observable('');
 
     //--- Internal functions
-    function ajaxHelper(uri, method, data) {
-        self.error(''); // Clear error message
-        return $.ajax({
-            type: method,
-            url: uri,
-            dataType: 'json',
-            async:false,
-            contentType: 'application/json',
-            data: data ? JSON.stringify(data) : null,
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log("AJAX Call[" + uri + "] Fail...");
-                hideLoading();
-                self.error(errorThrown);
-            }
-        });
-    }
 
-    self.complete = function (nick) {
-        var composedUri = self.baseUri() + "api/Utils/Search?q=" + nick;
-        ajaxHelper(composedUri, 'GET').done(function (data) {
-            var dataComplete = data.slice(0, 5);
-            var arrayData = []
-            dataComplete.forEach(item => {
-                arrayData.push(item["Name"]);
-            });
-            $("#searchbar").autocomplete({
-                minLength: 3,
-                source: arrayData,
-            });
-        console.log(dataComplete);
-        });
-    }
 
-    function showLoading() {
-        $("#myModal").modal('show', {
-            backdrop: 'static',
-            keyboard: false
-        });
-    }
-    function hideLoading() {
-        $('#myModal').on('shown.bs.modal', function (e) {
-            $("#myModal").modal('hide');
-        })
-    }
-
-    $('#searchbar').keyup(function () {
-        // var mika = $('#searchbar').val();
-        // console.log(mika)
-
-        // if (mika.length>=3){
-        //     self.complete(mika);
-        // }
+    $("#searchAll").autocomplete({ 
+        minLength: 3,
+        source: function(request, response) {
+            $.ajax({
+                type: "GET",
+                url : "http://192.168.160.58/Olympics/api/Utils/Search",
+                data: { 
+                    q: $('#searchAll').val().toLowerCase()
+                },
+                success: function(data) {
+                    if (!data.length) {
+                        var result = [{
+                            label: 'No results found.',
+                            value: response.term,
+                            source: " "
+                        }];
+                        response(result);
+                    } else {
+                        var nData = $.map(data, function(value, key){
+                            return {
+                                label: value.Name + " ( " + value.TableName + " )",
+                                table : value.TableName,
+                                value: value.Id,
+                                source: "Search"
+                            }
+                        });
+                        results = $.ui.autocomplete.filter(nData, request.term);
+                        response(results);
+                    }
+                },
+                error: function(){
+                    alert("error");
+                }
+            }) 
+        },
+        select: function(event, ui) {
+           window.location.href = "./" + ui.item.table.toLowerCase() + "Details.html?id" + ui.item.value
+        },
     });
 
 };
