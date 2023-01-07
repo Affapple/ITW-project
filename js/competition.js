@@ -179,6 +179,7 @@ var vm = function () {
 
     search = function () {
         console.log("search");
+        self.search = $("#searchArgs").val()
         var api = 'http://192.168.160.58/Olympics/api/Competitions/SearchByName?q=' + $("#searchArgs").val();
         self.countrieslist = [];
         ajaxHelper(api,'GET').done(function(data){
@@ -236,12 +237,12 @@ var vm = function () {
 
     $(".countryFilter").change(function() {
 
-        p = $(this).children("option:selected").val();
+        p = $(".countryFilter" +" option:selected").val();
         self.filter = p;
         if (p != 'null') {
             showLoading();
             var url = '';
-            if (self.search != '') {
+            if (self.search != '' ) {
                 url = 'http://192.168.160.58/Olympics/api/Competitions/SearchByName?q=' + self.search;
             } else {
                 url = self.baseUri();
@@ -251,18 +252,20 @@ var vm = function () {
                 if (self.search != '') {
                     for (var a = 0; a < data.length; a++) {
                         var v = data[a];
+                        console.log(data[a])
                         if (v.Modality == p) {
                             auto.push(v);
                         }
                     }
                 } else {
-                    for (var a = 0; a < data.List.length; a++) {
-                        var v = data.List[a];
+                    for (var a = 0; a < data.Records.length; a++) {
+                        var v = data.Records[a];
                         if (v.Modality == p) {
                             auto.push(v);
                         }
                     }
                 }
+                console.log(auto)
                 self.records(auto);
                 self.totalRecords(auto.length);
                 $("#pagination").addClass("d-none");

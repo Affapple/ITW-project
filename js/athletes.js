@@ -1,3 +1,10 @@
+let api_url
+let searchSelected
+const tooltips = document.querySelectorAll('.tt')
+tooltips.forEach(t => {
+    new bootstrap.Tooltip(t)
+});
+
 let vm = function athletesTableViewModel() {
     let self = this;
 
@@ -13,6 +20,7 @@ let vm = function athletesTableViewModel() {
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
     self.searchParams= ko.observable("");
+    self.filter = ko.observable("")
     self.favourites = {
         Athletes: [],
         Games: [],
@@ -104,16 +112,20 @@ let vm = function athletesTableViewModel() {
     
     function startLoading(page){
         showLoading();
-
-        if (self.searchParams() == "") {
+        if (self.filter() != "") {
+            composedUri = self.baseUri()+ "/Athletes?page=" + page + "&pagesize=" + self.pageSize() + "&sortby=" + self.filter();
+            $("#clearFilters").removeClass("d-none")
+        } else if (self.searchParams() == "") {
             composedUri = self.baseUri() + "/Athletes?page="+ page + "&pageSize=" + self.pageSize();
         } else {
             composedUri = self.baseUri() + "/Athletes/SearchByName?q=" + self.searchParams();
-        };
+        }
+        console.log(composedUri)
 
         pedidoAJAX(composedUri, 'GET').done(function (data) {
             console.log(data);
-            if ( self.searchParams() == "" ){
+
+            if ( self.searchParams() == "" || self.filter() != ""){
                 self.records(data.Records);
                 self.currentPage(data.CurrentPage);
                 self.hasNext(data.HasNext);
@@ -126,9 +138,22 @@ let vm = function athletesTableViewModel() {
                 self.records(data.slice(20*(self.currentPage()-1), 20*(self.currentPage()) ));
                 self.totalRecords(data.length);
                 self.totalPages(parseInt(data.length/20 + 1));
-
             };
             self.loadFavourites();
+            $('a.page-link').click(function(){
+                var gotoPage = $(this).attr('goto');
+                if (gotoPage==undefined){
+                    return
+                } 
+                var attr = ""
+                if (self.filter() != ""){
+                    attr = "&filter=" + self.filter();
+                } else if (self.searchParams() != "") {
+                    attr = "&search=" +  self.searchParams();
+                };
+                var newURL = '//' + location.host + location.pathname + "?page=" + gotoPage + attr;
+                window.location.href = newURL
+            })
 
             hideLoading();
         });
@@ -140,11 +165,60 @@ let vm = function athletesTableViewModel() {
         window.location.href = newURL
     })
 
+    $("a[role='button']").click(function(){
+        filter = $(this).attr('val')
+        console.log(filter)
+        newURL = '//' + location.host + location.pathname + '?page=1&filter=' + filter
+        window.location.href = newURL
+    })
+
+    $("#searchArgs").autocomplete({ 
+        minLength: 4,
+        source: function(request, response) {
+            $.ajax({
+                type: "GET",
+                url : "http://192.168.160.58/Olympics/api/Athletes/SearchByName?id=",
+                data: { 
+                    q: $('#searchArgs').val().toLowerCase()
+                },
+                success: function(data) {
+                    if (!data.length) {
+                        var result = [{
+                            label: 'No results found.',
+                            value: response.term,
+                            source: " "
+                        }];
+                        response(result);
+                    } else {
+                        var nData = $.map(data, function(value, key){
+                            return {
+                                label: value.Name,
+                                value: value.Id,
+                                source: "SearchByName"
+                            }
+                        });
+                        results = $.ui.autocomplete.filter(nData, request.term);
+                        response(results);
+                    }
+                },
+                error: function(){
+                    alert("error");
+                }
+            }) 
+        },
+        select: function(event, ui) {
+           window.location.href = "./AthletesDetails.html?id=" + ui.item.value;
+        },
+    });
     
     // inicializar pedido
-    var pg = getUrlParameter('page');
-    let srch = getUrlParameter('search')
+    let pg = getUrlParameter('page');
+    let srch = getUrlParameter('search');
+    let filter = getUrlParameter('filter');
+
+
     if (srch != undefined){self.searchParams(srch)}
+    if (filter!=undefined){self.filter(filter)}
     
     if (pg == undefined){
         startLoading(page = 1);
