@@ -25,7 +25,8 @@ var vm = function () {
         Athletes: [],
         Games: [],
         Modalities : [],
-        Competitions : []
+        Competitions : [],
+        Countries : []
     }; 
 
     self.loadFavourites = function(){

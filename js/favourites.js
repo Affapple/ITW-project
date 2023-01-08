@@ -4,18 +4,20 @@ function FavouritesViewModel() {
 
     self.baseUri = ko.observable('http://192.168.160.58/Olympics/api');
 
-    self.list = ['Athletes', 'Games', 'Modalities', 'Competitions'];
+    self.list = ['Athletes', 'Games', 'Modalities', 'Competitions', 'Countries'];
 
     self.Athletes = ko.observableArray([])
     self.Games = ko.observableArray([])
     self.Modalities = ko.observableArray([])
     self.Competitions = ko.observableArray([])
+    self.Countries = ko.observableArray([])
 
     self.favourites = {
         Athletes: [],
         Games: [],
         Modalities: [],
-        Competitions: []
+        Competitions: [],
+        Countries: []
     };
 
     // loadFavourites
@@ -125,6 +127,19 @@ function FavouritesViewModel() {
         })
         return competicoes;
     }
+    self.loadCountries = function () {
+        var countries = new Array;
+        Favoritos.Countries.forEach(id => {
+            var composedUri = self.baseUri() + "/Countries/" + id
+            pedidoAJAX(composedUri, 'GET').done(function (data) {
+                countries.push({
+                    'Name': data.Name,
+                    'Id': data.Id,
+                });
+            })
+        })
+        return countries;
+    }
 
 
 
@@ -136,6 +151,7 @@ function FavouritesViewModel() {
             self.Games(self.loadGames());
             self.Modalities(self.loadModalities());
             self.Competitions(self.loadCompetitions());
+            self.Countries(self.loadCountries());
         }
 
     }

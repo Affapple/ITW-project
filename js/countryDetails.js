@@ -26,8 +26,6 @@ var vm = function() {
             self.Ioc(data.IOC);
             self.Events(data.Events);
             self.Participant(data.Participant)
-
-
             hideLoading();
         });
     };
@@ -49,18 +47,7 @@ var vm = function() {
 
     }
 
-    function showLoading() {
-        $('#myModal').modal('show', {
-            backdrop: 'static',
-            keyboard: false
-        });
-    }
 
-    function hideLoading() {
-        $('#myModal').on('shown.bs.modal', function(e) {
-            $("#myModal").modal('hide');
-        })
-    }
 
     function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1),
@@ -149,8 +136,23 @@ var vm = function() {
            }
        });
 };
+function showLoading() {
+    $('#myModal').modal('show', {
+        backdrop: 'static',
+        keyboard: false
+    });
+}
+
+function hideLoading() {
+    $('#myModal').on('shown.bs.modal', function(e) {
+        $("#myModal").modal('hide');
+    })
+}
 
 $(document).ready(function() {
     console.log("ready!");
     ko.applyBindings(new vm());
 });
+$(document).ajaxComplete(function(){
+    hideLoading();
+})

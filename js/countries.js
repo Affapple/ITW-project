@@ -22,10 +22,11 @@ var vm = function () {
     self.hasPrevious = ko.observable(false);
     self.hasNext = ko.observable(false);
     self.favourites = {
-        athletes: [],
-        games: [],
-        modalities : [],
-        competitions : []
+        Athletes: [],
+        Games: [],
+        Modalities : [],
+        Competitions : [],
+        Countries : []
     }; 
 
     self.loadFavourites = function(){
@@ -35,7 +36,7 @@ var vm = function () {
             localStorage.setItem('favourites', JSON.stringify(self.favourites));
         };
 
-        Favoritos = self.favourites.modalities;
+        Favoritos = self.favourites.Countries;
 
         Favoritos.forEach(id => {
             $("#favourite_"+id).css('color','red');
@@ -95,7 +96,6 @@ var vm = function () {
         var composedUri = self.baseUri() + "?page=" + id + "&pageSize=" + self.pagesize();
         ajaxHelper(composedUri, 'GET').done(function (data) {
             console.log(data);
-            hideLoading();
             self.records(data.Records);
             self.currentPage(data.CurrentPage);
             self.hasNext(data.HasNext);
@@ -103,7 +103,8 @@ var vm = function () {
             self.pagesize(data.PageSize)
             self.totalPages(data.TotalPages);
             self.totalRecords(data.TotalRecords);
-            //self.SetFavourites();
+            self.loadFavourites();
+            hideLoading();
         });
     };
 

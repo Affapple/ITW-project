@@ -25,7 +25,8 @@ let vm = function athletesTableViewModel() {
         Athletes: [],
         Games: [],
         Modalities : [],
-        Competitions : []
+        Competitions : [],
+        Countries : []
     }; 
 
     self.loadFavourites = function(){
@@ -175,12 +176,10 @@ let vm = function athletesTableViewModel() {
     $("#searchArgs").autocomplete({ 
         minLength: 4,
         source: function(request, response) {
+            let src = $('#searchArgs').val().toLowerCase().replace(/ /g, '+')
             $.ajax({
                 type: "GET",
-                url : "http://192.168.160.58/Olympics/api/Athletes/SearchByName?id=",
-                data: { 
-                    q: $('#searchArgs').val().toLowerCase()
-                },
+                url : "http://192.168.160.58/Olympics/api/Athletes/SearchByName?q=" + src,
                 success: function(data) {
                     if (!data.length) {
                         var result = [{
