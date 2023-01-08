@@ -114,11 +114,7 @@ var vm = function () {
         console.log(data)
         data.forEach(game => {
             L.marker([game.Lat, game.Lon], { icon: myIcon })
-<<<<<<< HEAD
-            .bindPopup("<a href='./gameDetails.html?id=" + game.Id + "'>"+game.Name+"</a><br><b>"+ game.CityName + "," + game.CountryName+  "</b>")
-=======
             .bindPopup("<a class='text-decoration-none' href='" + "/gameDetails.html?id=" + game.Id + "'>"+game.Name+"</a><br><b>"+ game.CityName + "," + game.CountryName+  "</b>")
->>>>>>> c0a904981e97b9eebb076268018b651ebc01e760
             .addTo(map);
            
         });

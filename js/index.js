@@ -7,10 +7,14 @@
 
     self.error = ko.observable('');
 
+ $("#searchAll").parent().removeClass("col-lg-5")
+ $("#searchAll").parent().addClass("col-md-4")
+ $("#ui-id-1").css("z-index", "100")
+ $(".fixed-top").css("z-index", "2")
 
 
     $("#searchAll").autocomplete({ 
-        minLength: 3,
+        minLength: 4,
         source: function(request, response) {
             $.ajax({
                 type: "GET",

@@ -248,11 +248,13 @@ var vm = function () {
                 url = self.baseUri();
             }
             ajaxHelper(url, 'GET').done(function(data) {
+                console.log("if null \n", data)
                 var auto = [];
                 if (self.search != '') {
-                    for (var a = 0; a < data.length; a++) {
-                        var v = data[a];
-                        console.log(data[a])
+                    console.log(data.Records.length)
+
+                    for (var a = 0; a < data.Records.length; a++) {
+                        var v = data.Records[a];
                         if (v.Modality == p) {
                             auto.push(v);
                         }
@@ -284,13 +286,14 @@ var vm = function () {
             ajaxHelper(url, 'GET').done(function(data) {
                 var auto = [];
                 if (self.search != '') {
-                    for (var a = 0; a < data.length; a++) {
-                        var v = data[a];
+                    for (var a = 0; a < data.Records.length; a++) {
+                        var v = data.Records[a];
                         auto.push(v);
                     }
                 } else {
-                    for (var a = 0; a < data.List.length; a++) {
-                        var v = data.List[a];
+                    console.log(data)
+                    for (var a = 0; a < data.Records.length; a++) {
+                        var v = data.Records[a];
                         auto.push(v);
                     }
                 }
